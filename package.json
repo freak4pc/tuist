@@ -1,0 +1,35 @@
+{
+  "name": "installer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn build-dist && yarn build-exe",
+    "build-dist": "rollup -c",
+    "build-exe": "pkg dist/index.js -t node18-macos-x64 -o bin/mndyinstaller",
+    "start": "yarn build-dist && node dist/index.js"
+  },
+  "devDependencies": {
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@types/node": "^20.11.25",
+    "@types/openurl": "^1.0.3",
+    "@types/prompt-sync": "^4.2.3",
+    "esbuild": "^0.20.1",
+    "nexe": "^4.0.0-rc.4",
+    "pkg": "^5.8.1",
+    "rollup": "^4.12.1",
+    "rollup-plugin-esbuild": "^6.1.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "add": "^2.0.6",
+    "console-log-colors": "^0.4.0",
+    "open": "^10.1.0",
+    "openurl": "^1.1.1",
+    "prompt-sync": "^4.2.0",
+    "yarn": "^1.22.21"
+  }
+}
