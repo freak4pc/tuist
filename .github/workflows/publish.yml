@@ -34,8 +34,8 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: bin
-          asset_name: mndyinstallerbin${{ steps.release.outputs.tag_name }}
+          file: bin/mndyinstaller
+          asset_name: mndyinstaller${{ steps.release.outputs.tag_name }}
           tag: ${{ steps.release.outputs.tag_name }}
           overwrite: true
           body: "Monday.com installer"
