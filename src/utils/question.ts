@@ -19,9 +19,11 @@ export function yesOrNo(question: string): boolean {
 export function pressAnyKeyToContinue(): Promise<void> {
     return new Promise((resolve) => {
         const stdin = process.stdin;
+        stdin.resume();
         stdin.setRawMode(true);
         stdin.once('data', () => {
             stdin.setRawMode(false);
+            stdin.pause();
             resolve();
         });
     });
