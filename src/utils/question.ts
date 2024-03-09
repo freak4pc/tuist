@@ -11,9 +11,18 @@ export function askPassword(question: string, options: prompt.Option | undefined
     return askQuestion(question, { echo: "*", ...options});
 }
 
+export function askQuestionAcceptingOnlyValues(question: string, acceptedValues: string[]): string {
+    let response = askQuestion(question);
+    while(!acceptedValues.includes(response.toLowerCase().trim())) {
+        console.log(`Invalid response. Accepted values are: ${acceptedValues.map(v => v.toLowerCase()).join(", ")}`);
+        response = askQuestion(question);
+    }
+    return response.toLowerCase().trim();
+}
+
 export function yesOrNo(question: string): boolean {
-    const response = askQuestion(question + " (y/n)");
-    return response.toLowerCase() === "y" || response.toLowerCase() === "yes";
+    const response = askQuestionAcceptingOnlyValues(question + " (y/n)", ["y", "n", "yes", "no"]);
+    return response === "y" || response === "yes";
 }
 
 export function pressAnyKeyToContinue(): Promise<void> {
