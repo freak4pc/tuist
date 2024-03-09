@@ -12,10 +12,14 @@ export function askPassword(question: string, options: prompt.Option | undefined
 }
 
 export function askQuestionAcceptingOnlyValues(question: string, acceptedValues: string[]): string {
-    let response = askQuestion(question);
+    let response = askQuestion(question, {
+      autocomplete: (input: string) => acceptedValues.filter(v => v.toLowerCase().startsWith(input.toLowerCase()))
+    });
     while(!acceptedValues.includes(response.toLowerCase().trim())) {
         console.log(`Invalid response. Accepted values are: ${acceptedValues.map(v => v.toLowerCase()).join(", ")}`);
-        response = askQuestion(question);
+        response = askQuestion(question, {
+            autocomplete: (input: string) => acceptedValues.filter(v => v.toLowerCase().startsWith(input.toLowerCase()))
+        });
     }
     return response.toLowerCase().trim();
 }
