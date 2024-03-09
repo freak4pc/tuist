@@ -16,7 +16,7 @@
       "types/*": ["./types/*"]
     }
   },
-  "files": ["src/index.ts"],
+  "files": ["src/index.ts", "./src/basicSteps.ts"],
   "exclude": ["__tests__"],
   "include": ["src/**/*"]
 }
