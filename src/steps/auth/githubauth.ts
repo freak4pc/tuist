@@ -1,5 +1,7 @@
 import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
+import { pressAnyKeyToContinue, yesOrNo } from "lib/utils/question";
+import { open } from "openurl";
 
 export class GithubAuth extends Step {
     async installCheck() {
@@ -15,6 +17,14 @@ export class GithubAuth extends Step {
     }
 
     async installStep() {
+        const setupEmail = yesOrNo("Did you already setup a github user in github.com settings and connected it to your email?")
+        if(!setupEmail) {
+            console.log("Add your @monday.com email in GitHub settings, define it in Emails section first and verify it.")
+            console.log("Press any key to open github settings")
+            await pressAnyKeyToContinue();
+            open("https://github.com/settings/emails");
+        }
+
         await runCommand('gh auth login');
     }
 }
