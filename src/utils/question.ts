@@ -29,15 +29,19 @@ export function yesOrNo(question: string): boolean {
     return response === "y" || response === "yes";
 }
 
-export function pressAnyKeyToContinue(): Promise<void> {
+export function pressAnyKeyToContinue(): Promise<string> {
     return new Promise((resolve) => {
         const stdin = process.stdin;
         stdin.resume();
         stdin.setRawMode(true);
-        stdin.once('data', () => {
+        stdin.setEncoding('utf8');
+        stdin.on('data', function (key: string) {
+            if (key === '\u0003') {
+                process.exit();
+            }
             stdin.setRawMode(false);
             stdin.pause();
-            resolve();
+            resolve(key);
         });
     });
 }
