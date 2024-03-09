@@ -20,11 +20,25 @@ jobs:
           cmd: install
       - name: Run build
         uses: borales/actions-yarn@v4
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          cmd: build
-      - uses: actions/upload-artifact@v4
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            New version
+          draft: false
+          prerelease: false
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: mndyinstaller
-          path: bin/mndyinstaller
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: bin/mndyinstaller
+          asset_name: mndyinstaller
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "Monday.com installer"
       
       
