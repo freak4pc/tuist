@@ -20,6 +20,9 @@ jobs:
           cmd: install
       - name: Run build
         uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+      - name: Create release
         id: create_release
         uses: actions/create-release@v1
         env:
