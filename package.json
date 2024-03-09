@@ -6,7 +6,7 @@
   "scripts": {
     "build": "yarn build-dist && yarn build-exe",
     "build-dist": "rollup -c",
-    "build-exe": "pkg dist/index.js -t node18-macos-x64 -o bin/mndyinstaller && zip -r bin/mndyinstaller.zip bin/mndyinstaller",
+    "build-exe": "pkg dist/index.js -t node18-macos-x64 -o bin/mndyinstaller",
     "start": "yarn build-dist && node dist/index.js"
   },
   "devDependencies": {
