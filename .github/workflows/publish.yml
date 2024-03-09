@@ -35,7 +35,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: bin/mndyinstaller
-          asset_name: mndyinstaller${{ steps.release.outputs.tag_name }}
+          asset_name: mndyinstaller
           tag: ${{ steps.release.outputs.tag_name }}
           overwrite: true
           body: "Monday.com installer"
