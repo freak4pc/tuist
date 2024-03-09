@@ -118,6 +118,8 @@ export async function main() {
     }
     console.log(`all steps done in ${formatTime(new Date().getTime() - startedAllAt.getTime())}
     skipped ${skipped} steps / ${stepsCount} total steps`);
+    console.log(`Press any key to finish...`);
+    await pressAnyKeyToContinue();
 
 }
 
