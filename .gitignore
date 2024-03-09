@@ -1,3 +1,5 @@
 node_modules/
 dist/
-bin/
+bin/*
+!bin/mndyinstaller.sh
+.DS_Store
