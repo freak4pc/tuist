@@ -2,24 +2,23 @@ import fs from 'fs';
 import os from "os";
 import { Step } from '../step';
 import { runCommand } from 'lib/utils/exec';
+import { hasCommand, hasEnvSet, hasFile } from 'lib/utils/checks';
 
 export class InstallNvm extends Step {
     constructor() {
         super();
     }
     async installCheck() {
-        const nvmDir = await runCommand('echo $NVM_DIR');
-        if(!nvmDir || nvmDir.length <= 1) {
+        if(!await hasEnvSet('NVM_DIR')) {
             return { valid: false, reason: "Nvm is not installed. No $NVM_DIR" };
         }
 
-        if(!fs.existsSync(`${os.homedir()}/.nvm`)) {
-            return { valid: false, reason: "Nvm is not installed in ~/.nvm" };
+        if(!hasFile(`~/.nvm`)) {
+            return { valid: false, reason: "Nvm is not installed. No ~/.nvm" };
         }
-        try {
-            await runCommand('nvm --version');
-        } catch(e) {
-            return { valid: false, reason: "Nvm is not installed" };
+
+        if(!await hasCommand('nvm --version')) {
+            return { valid: false, reason: "Nvm is not installed. command not found" };
         }
         
         if(!(await runCommand('nvm list')).includes('16.14')) {

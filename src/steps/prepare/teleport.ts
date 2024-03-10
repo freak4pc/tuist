@@ -1,12 +1,11 @@
 import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
+import { hasCommand } from "lib/utils/checks";
 
 export class InstallTeleport extends Step {
     async installCheck() {
-        try {
-            await runCommand('teleport version');
-        } catch(e: any) {
-            return { valid: false, reason: `Teleport is not installed. Failed to run 'teleport version'. ${e.message} ` };
+        if(!await hasCommand('teleport version')) {
+            return { valid: false, reason: "Teleport is not installed. Command Teleport not found." };
         }
         return { valid: true };
     }

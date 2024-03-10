@@ -5,7 +5,7 @@ import os from "os"
 
 const exec = util.promisify(childProcess.exec);
 
-export async function runCommand(command: string, options: Parameters<typeof exec>[1] = {}, { printWhile = false, onData }: {printWhile?: boolean, onData?: (data: string) => void } = {}): Promise<string> {
+export async function runCommand(command: string, options: Parameters<typeof exec>[1] = {}, { printWhile = false, detailedError = true, onData }: {detailedError?: boolean, printWhile?: boolean, onData?: (data: string) => void } = {}): Promise<string> {
     return new Promise((resolve, reject) => {
         if((command.includes("nvm")) && fs.existsSync('/bin/zsh') && fs.existsSync(`${os.homedir()}/.zshrc`)) {
             process.env.PREFIX = "";
@@ -20,7 +20,10 @@ export async function runCommand(command: string, options: Parameters<typeof exe
                     ...options
         }, (error, stdout, stderr) => {
             if (error) {
-                console.log(stdout, stderr, error)
+                if(detailedError) {
+                    console.log("error occured", stdout, stderr, error)
+                }
+                
                 reject(error);
             } else {
                 resolve(stdout as string);

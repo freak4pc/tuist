@@ -1,12 +1,11 @@
 import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
+import { hasCommand } from "lib/utils/checks";
 
 export class RvmInstaller extends Step {
     async installCheck() {
-        try {
-            await runCommand('rvm --version');
-        } catch(e: any) {
-            return { valid: false, reason: `RVM is not installed. Failed to run 'rvm --version'. ${e.message} ` };
+        if(!await hasCommand('rvm --version')) {
+            return { valid: false, reason: "RVM is not installed. Command rvm not found." };
         }
         return { valid: true };
     }

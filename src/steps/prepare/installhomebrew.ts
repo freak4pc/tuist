@@ -4,10 +4,8 @@ import fs from 'fs';
 
 export class InstallHomebrew extends Step {
     async installCheck() {
-        try {
-            await runCommand('brew --version');
-        } catch(e) {
-            return { valid: false, reason: "Can't run 'brew --version failed' " };
+        if(!await runCommand(`brew --version`)) {
+            return { valid: false, reason: "Brew is not installed. Command brew not found." };
         }
         return { valid: true, reason: "already able to run brew" };
     }

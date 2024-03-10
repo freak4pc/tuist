@@ -1,15 +1,14 @@
 import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
+import { hasCommand } from "lib/utils/checks";
 
 export class InstallOkteto extends Step {
     constructor() {
         super();
     }
     async installCheck() {
-        try {
-            await runCommand('okteto version');
-        } catch(e: any) {
-            return { valid: false, reason: `Okteto is not installed. Failed to run 'okteto version'. ${e.message} ` };
+        if(!await hasCommand('okteto version')) {
+            return { valid: false, reason: `Okteto is not installed. Command not found.` };
         }
         return { valid: true };
     }

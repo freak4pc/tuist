@@ -2,6 +2,7 @@ import fs from 'fs';
 import os from "os";
 import { Step } from '../step';
 import { runCommand } from 'lib/utils/exec';
+import { hasEnvSetTo } from 'lib/utils/checks';
 
 export class SetEnvVariable extends Step {
     env: string;
@@ -12,9 +13,8 @@ export class SetEnvVariable extends Step {
         this.value = value;
     }
     async installCheck() {
-        const value = (await runCommand(`echo $${this.env}`)).trim();
-        if(value !== this.value) {
-            return { valid: false, reason: `Environment variable ${this.env} is not set to ${this.value}. its set to ${value}` };
+        if(!await hasEnvSetTo(this.env, this.value)) {
+            return { valid: false, reason: `Environment variable ${this.env} is not set to ${this.value}` };
         }
         return { valid: true };
     }

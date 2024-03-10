@@ -1,14 +1,15 @@
 import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
 import fs from 'fs';
+import { hasFile } from "lib/utils/checks";
 
 export class InstallIterm extends Step {
     async installCheck() {
-        if(!fs.existsSync('/Applications/iTerm.app')) {
+        if(!hasFile('/Applications/iTerm.app')) {
             return { valid: false, reason: "Iterm is not installed at /Applications/iTerm.app" };
         }
         try {
-            await runCommand('echo cool');
+            await runCommand('echo cool', {shell: '/bin/zsh'});
         } catch(e) {
             return { valid: false, reason: "Can't run using zsh" };
         }

@@ -1,17 +1,15 @@
 import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
+import { hasEnvSet } from "lib/utils/checks";
 
 export class PythonFixes extends Step {
     async installCheck() {
-        const pyenvRoot = (await runCommand(`echo $PYENV_ROOT`)).trim();
-        if(pyenvRoot === "") {
+        if(!await hasEnvSet("PYENV_ROOT")) {
             return { valid: false, reason: "PYENV_ROOT is not set" };
         }
-        const python = (await runCommand(`echo $PYTHON`)).trim();
-        if(python === "") {
+        if(!await hasEnvSet("PYTHON")) {
             return { valid: false, reason: "PYTHON is not set" };
         }
-
         const installedVersions = (await runCommand(`pyenv versions`)).trim();
         if(!installedVersions.includes("3.10.13")) {
             return { valid: false, reason: "3.10.13 is not installed" };
