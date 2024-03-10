@@ -45,10 +45,10 @@ async function runSteps(steps: Step[]) {
             console.error(`reason: ${result.reason}. error: ${result.error}`);
             console.log(`there are still ${stepsCount - (idx - 1)} steps left. `);
             console.error(`${red(`step ${step.name()}... failed.`)} ${idx}/${stepsCount}`);
-            console.error('Please contact iow for help.');
+            console.error('Please write in #devs4devs for help.');
             console.error(`Press any key to open a iow ticket`);
             await pressAnyKeyToContinue();
-            open("https://iow.monday.beer/");
+            open("https://app.slack.com/client/T024J3LAA/C034VLARPJS");
             process.exit(-1);
         }
 
