@@ -31,7 +31,7 @@ export class NpmAuth extends Step {
     async installStep() {
         console.log("Let's login to npm...");
         const hasAccount = yesOrNo('Do you already have an account in npm?');
-        if(hasAccount) {
+        if(!hasAccount) {
             console.log("Let's create one..");
             console.log(`We need to create a user using your ${red(`@monday.com`)} user.`);
             console.log("You'll later get an email to confirm your account.")
@@ -41,7 +41,8 @@ export class NpmAuth extends Step {
         }
         const username = askQuestion('Username: ');
         const password = askPassword('Password: ');
-        await runCommand(`npm login --username ${username} --password ${password}`,
+        console.log(`Okay.. Let's connect to npm with ${username}`);
+        await runCommand(`nvm use 18.19 && npm login --username ${username} --password ${password}`,
             {}, 
             { printWhile: true, onData: (data) => {
                 const fullUrl = /https:\/\/www.npmjs.com\/login\?next=\/login\/cli\/[a-z0-9-]+/.exec(data);

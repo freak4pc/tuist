@@ -8,6 +8,7 @@ const exec = util.promisify(childProcess.exec);
 export async function runCommand(command: string, options: Parameters<typeof exec>[1] = {}, { printWhile = false, onData }: {printWhile?: boolean, onData?: (data: string) => void } = {}): Promise<string> {
     return new Promise((resolve, reject) => {
         if((command.includes("nvm")) && fs.existsSync('/bin/zsh') && fs.existsSync(`${os.homedir()}/.zshrc`)) {
+            process.env.PREFIX = "";
             command = `source ~/.zshrc > /dev/null 2>&1 || true && ${command}`
         }
         
