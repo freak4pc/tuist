@@ -25,8 +25,8 @@ export class InstallNvm extends Step {
             return { valid: false, reason: "Node 16.14 is not installed" };
         }
 
-        if(!(await runCommand('nvm list')).includes('18.19')) {
-            return { valid: false, reason: "Node 18.19 is not installed" };
+        if(!(await runCommand('nvm list')).includes('18.12')) {
+            return { valid: false, reason: "Node 18.12 is not installed" };
         }
 
         return { valid: true, reason: "Already installed nvm && node 16.14"}
@@ -51,8 +51,8 @@ export class InstallNvm extends Step {
         console.log("Installing node 16.14")
         await runCommand('nvm install 16.14');
 
-        console.log("Installing node 18.19")
-        await runCommand('nvm install 18.19');
+        console.log("Installing node 18.12")
+        await runCommand('nvm install 18.12');
         
         console.log("Setting node 16.14 as default")
         await runCommand('nvm alias default 16.14');
