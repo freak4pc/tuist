@@ -39,6 +39,7 @@ export class InstallNvm extends Step {
     async installStep() {
         console.log("Installing nvm")
         await runCommand('curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash');
+        
         console.log("Adding nvm to shell")
         await runCommand('echo "[[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh  # This loads NVM" >> ~/.zshrc');
 
