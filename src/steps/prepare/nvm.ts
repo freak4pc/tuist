@@ -41,11 +41,14 @@ export class InstallNvm extends Step {
         await runCommand('curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash');
         console.log("Adding nvm to shell")
         await runCommand('echo "[[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh  # This loads NVM" >> ~/.zshrc');
-        
-        // adding nvm to zsh
-        
+
+        console.log("brewing nvm");
+        await runCommand("brew install nvm");
 
         console.log("Sourcing nvm")
+        await runCommand("source $(brew --prefix nvm)/nvm.sh");
+
+        console.log("Sourcing nvm HOME")
         await runCommand('. $HOME/.nvm/nvm.sh');
         
         console.log("Installing node 16.14")
