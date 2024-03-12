@@ -5,6 +5,7 @@ import { pressAnyKeyToContinue } from './utils/question';
 import { Step } from './steps/step';
 import { formatTime } from './utils/time';
 import { basicSteps } from './basicSteps';
+import { reportError } from './utils/errorHandling';
 
 export async function main() {
     const name = await getName();
@@ -32,6 +33,10 @@ async function runSteps(steps: Step[]) {
         if(!canInstall.valid) {
             console.error(`${red(`Can't run step ${step.name()}.`)} ${idx}/${stepsCount}`);
             console.error(`reason: ${canInstall.reason}`);
+            await reportError({
+                step: step.name(),
+                error: canInstall.reason || "",
+            });
             if(canInstall.fixAction) {
                 await canInstall.fixAction();
             } else {
@@ -61,6 +66,10 @@ async function runSteps(steps: Step[]) {
             console.log(`there are still ${stepsCount - (idx - 1)} steps left. `);
             console.error(`${red(`step ${step.name()}... failed.`)} ${idx}/${stepsCount}`);
             console.error('Please write in #devs4devs for help.');
+            await reportError({
+                step: step.name(),
+                error: result.reason || "",
+            });
             console.error(`Press any key to open #devs4devs channel`);
             await pressAnyKeyToContinue();
             open("https://app.slack.com/client/T024J3LAA/C034VLARPJS");
