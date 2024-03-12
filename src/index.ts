@@ -28,7 +28,7 @@ async function runSteps(steps: Step[]) {
     for (const step of steps) {
         idx++;
         const startedCurrentStepAt = new Date();
-        const canInstall = !step.checkPreinstall || await step.checkPreinstall();
+        const canInstall = await step.checkPreinstall();
         if(!canInstall.valid) {
             console.error(`${red(`Can't run step ${step.name()}.`)} ${idx}/${stepsCount}`);
             console.error(`reason: ${canInstall.reason}`);
