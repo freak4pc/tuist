@@ -6,6 +6,7 @@ https://github.com/DaPulse/mndyinstaller/releases
 2. To give the script permissions run
 
     sudo xattr -r -d com.apple.quarantine ./mndyinstaller
+    
     chmod u+x /Users/tombo/Downloads/mndyinstaller
 
 3. Run the script
