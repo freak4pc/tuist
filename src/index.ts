@@ -28,6 +28,21 @@ async function runSteps(steps: Step[]) {
     for (const step of steps) {
         idx++;
         const startedCurrentStepAt = new Date();
+        const canInstall = !step.checkPreinstall || await step.checkPreinstall();
+        if(!canInstall.valid) {
+            console.error(`${red(`Can't run step ${step.name()}.`)} ${idx}/${stepsCount}`);
+            console.error(`reason: ${canInstall.reason}`);
+            if(canInstall.fixAction) {
+                await canInstall.fixAction();
+            } else {
+                console.error('Please write in #devs4devs for help.');
+                console.error(`Press any key to open #devs4devs channel`);
+                await pressAnyKeyToContinue();
+                open("https://app.slack.com/client/T024J3LAA/C034VLARPJS");
+            }
+            
+            process.exit(-1);
+        }
         const isInstalledAlready = await step.beforeInstallCheck();
         if (isInstalledAlready.valid) {
             console.log(`${gray(`Skipped step ${step.name()}... ${isInstalledAlready.reason || "Already done before"}`)}. ${formatTime(new Date().getTime() - startedCurrentStepAt.getTime())} ${idx}/${stepsCount}`);

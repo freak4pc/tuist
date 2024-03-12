@@ -17,6 +17,10 @@ export abstract class Step {
         return { success: isInstalledNow.valid, reason: isInstalledNow.reason};
     }
 
+    async checkPreinstall(): Promise<{valid: boolean, reason?: string, fixAction?: () => Promise<void> }> {
+        return { valid: true, reason: "Can install" };
+    }
+    
     abstract installCheck(): Promise<{valid: boolean, reason?: string }>;
     abstract installStep(): Promise<void>;
     abstract name(): string;

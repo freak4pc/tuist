@@ -9,9 +9,17 @@ export class XCodeInstall extends Step {
         super();
     }
     async installCheck() {
-        if(!await hasCommand('xcode-select -p')) {
-            return { valid: false, reason: "Xcode is not installed. Command not found" };
+        try {
+            if(!(await runCommand('xcode-select -p')).trim()) {
+                return { valid: false, reason: "Xcode is not installed. Command not found" };
+            }
+        } catch(e: any) {
+            if (e.message.includes("command not found")) {
+                return { valid: false, reason: "Xcode is not installed. Command not found" };
+            }
+            return { valid: false, reason: `Xcode error while checking. ${e.message}` };
         }
+        
         return { valid: true, reason: "Already installed xcode, able to run xcode-select" };
     }
 

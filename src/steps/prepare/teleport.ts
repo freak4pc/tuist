@@ -15,8 +15,9 @@ export class InstallTeleport extends Step {
     }
 
     async installStep() {
-        console.log("installing teleport");
+        console.log("downloading teleport");
         await runCommand('curl -O https://cdn.teleport.dev/teleport-ent-13.3.4.pkg');
+        console.log("installing teleport");
         await runCommand('sudo installer -pkg teleport-ent-13.3.4.pkg -target /');
     }
 }

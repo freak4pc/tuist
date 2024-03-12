@@ -24,6 +24,7 @@ export class SetEnvVariable extends Step {
     }
 
     async installStep() {
+        console.log(`Setting environment variable ${this.env} to ${this.value}`);
         await runCommand(`echo "export ${this.env}=${this.value}" >> ~/.zshrc`);
     }
 }

@@ -4,7 +4,7 @@ import { hasCommand } from "lib/utils/checks";
 
 export class InstallHomebrew extends Step {
     async installCheck() {
-        if(!await hasCommand(`brew --version`)) {
+        if(!await hasCommand(`arch -arm64 brew --version`)) {
             return { valid: false, reason: "Brew is not installed. Command brew not found." };
         }
         return { valid: true, reason: "already able to run brew" };

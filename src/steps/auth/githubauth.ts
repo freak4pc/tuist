@@ -5,10 +5,17 @@ import { open } from "openurl";
 
 export class GithubAuth extends Step {
     async installCheck() {
-        const authResult = await runCommand('gh auth token');
-        if(authResult.trim() === "") {
-            return { valid: false, reason: "Github auth token is not set" };
+        try {
+            const authResult = await runCommand('gh auth token');
+            if(authResult.trim() === "") {
+                return { valid: false, reason: "Github auth token is not set" };
+            }
+        } catch(e: any) {
+            if (e.message.includes("no oauth token found")) {
+                return { valid: false, reason: "Github auth token is not set" };
+            }
         }
+        
         return { valid: true, reason: "already have a gh auth token" };
     }
     
@@ -24,7 +31,7 @@ export class GithubAuth extends Step {
             await pressAnyKeyToContinue();
             open("https://github.com/settings/emails");
         }
-
-        await runCommand('gh auth login');
+        console.log("Let's login to github...");
+        await runCommand('gh auth login --git-protocol ssh --web --hostname github.com');
     }
 }

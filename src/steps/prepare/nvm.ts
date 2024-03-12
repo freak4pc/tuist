@@ -21,12 +21,16 @@ export class InstallNvm extends Step {
             return { valid: false, reason: "Nvm is not installed. command not found" };
         }
         
-        if(!(await runCommand('nvm list')).includes('16.14')) {
+        if(!(await runCommand('nvm list')).includes('v16.14')) {
             return { valid: false, reason: "Node 16.14 is not installed" };
         }
 
-        if(!(await runCommand('nvm list')).includes('18.12')) {
+        if(!(await runCommand('nvm list')).includes('v18.12')) {
             return { valid: false, reason: "Node 18.12 is not installed" };
+        }
+
+        if(!(await runCommand('nvm list')).includes('v18.19')) {
+            return { valid: false, reason: "Node 18.19 is not installed" };
         }
 
         return { valid: true, reason: "Already installed nvm && node 16.14"}
@@ -47,7 +51,7 @@ export class InstallNvm extends Step {
         await runCommand('. $HOME/.nvm/nvm.sh');
 
         console.log("brewing nvm");
-        await runCommand("brew install nvm");
+        await runCommand("arch -arm64 brew install nvm");
 
         console.log("Sourcing nvm")
         await runCommand("source $(brew --prefix nvm)/nvm.sh");
@@ -57,6 +61,9 @@ export class InstallNvm extends Step {
 
         console.log("Installing node 18.12")
         await runCommand('nvm install 18.12');
+
+        console.log("Installing node 18.19")
+        await runCommand('nvm install 18.19');
         
         console.log("Setting node 16.14 as default")
         await runCommand('nvm alias default 16.14');

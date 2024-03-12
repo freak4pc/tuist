@@ -10,7 +10,7 @@ export class BrewAddRepos extends Step {
     async installCheck() {
         for(const repo of this.repos) {
             try {
-                const hasRepo = await runCommand(`brew tap | grep ${repo}`);
+                const hasRepo = await runCommand(`arch -arm64 brew tap | grep ${repo}`, {}, { detailedError: false } );
                 if(hasRepo.trim() !== repo) {
                     return { valid: false, reason: `${repo} is already tapped` };
                 }
@@ -24,8 +24,9 @@ export class BrewAddRepos extends Step {
         return `Brew add repos ${this.repos.join(', ')}`;
     }
     async installStep() {
+        console.log(`brew add repos! ${this.repos.join(', ')}`)
         for(const repo of this.repos) {
-            await runCommand(`brew tap ${repo}`);
+            await runCommand(`arch -arm64 brew tap ${repo}`);
         }
         
     }

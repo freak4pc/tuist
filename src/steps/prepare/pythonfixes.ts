@@ -25,12 +25,26 @@ export class PythonFixes extends Step {
     }
 
     async installStep() {
-        await runCommand(`pyenv install 3.10.13`);
-        await runCommand(`pyenv install 2.7.18`);
+        console.log("install python fixes!");
+
+        console.log("installing python 3.10.13");
+        await runCommand(`arch -arm64 pyenv install 3.10.13`);
+
+        console.log("installing python 2.7.18");
+        await runCommand(`arch -arm64 pyenv install 2.7.18`);
+
+        console.log("setting PYENV_ROOT");
         await runCommand(`echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc`);
+        console.log("set to current shell");
+        await runCommand(`export PYENV_ROOT="$HOME/.pyenv`);
+
+        console.log("adding pyenv to path");
         await runCommand(`echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc`);
+        console.log("initializing pyenv");
         await runCommand(`echo 'eval "$(pyenv init -)"' >> ~/.zshrc`);
+        console.log("setting global python version");
         await runCommand(`echo "pyenv global 2.7.18" >> ~/.zshrc`);
+        console.log("setting env PYTHON");
         await runCommand(`echo "export PYTHON=python" >> ~/.zshrc`);
     }
 }

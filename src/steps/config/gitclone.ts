@@ -24,6 +24,7 @@ export class GitClone extends Step {
     }
 
     async installStep() {
-        await runCommand(`git clone ${this.repo} ${this.destination}`);
+        console.log(`Cloning Repo '${this.repo}' to ${this.destination}`);
+        await runCommand(`source ~/.zshrc > /dev/null 2>&1 || true && gh repo clone ${this.repo} ${this.destination}`);
     }
 }

@@ -19,12 +19,15 @@ export class InstallBrewPackages extends Step {
         for(const curpackage of this.packages) {
             try {
                 const shortName = curpackage.split('/')[curpackage.split('/').length - 1];
-                const showList = await runCommand(`brew list ${curpackage}`);
+                const showList = await runCommand(`arch -arm64 brew list ${curpackage}`, {}, { detailedError: false });
                 if(!showList.includes(shortName)) {
                     console.log("show list", showList, shortName, curpackage)
                     return { valid: false, reason: `Package ${curpackage} is not listed` };
                 }
             } catch(e: any) {
+                if(e.message.includes('No such keg')) {
+                    return { valid: false, reason: `Package ${curpackage} is not installed` };
+                }
                 return { valid: false, reason: `Package ${curpackage} has error while checked. ${e.message}` };
             }
         }
@@ -35,6 +38,6 @@ export class InstallBrewPackages extends Step {
     }
     async installStep() {
         console.log(`install brew packages! ${this.packages.join(', ')}`)
-        await runCommand(`brew install ${this.force ? '--force ' : ''}${this.cask ? '--cask ' : ''}${this.packages.join(' ')}`);
+        await runCommand(`arch -arm64 brew install ${this.force ? '--force ' : ''}${this.cask ? '--cask ' : ''}${this.packages.join(' ')}`);
     }
 }

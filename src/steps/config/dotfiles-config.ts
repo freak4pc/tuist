@@ -15,6 +15,7 @@ export class DotfilesConfig extends Step {
         return "Dotfiles Config";
     }
     async installStep() {
+        console.log("Setting up dotfiles");
         const zshrc = fs.readFileSync(getPath('~/.zshrc'), 'utf8');
         if(!zshrc.includes('source ~/dotfiles/.bash_profile')) {
             fs.appendFileSync(getPath('~/.zshrc'), 'source ~/dotfiles/.bash_profile');

@@ -9,6 +9,9 @@ export class AwsCreds extends Step {
         if(!hasFile(`~/.awscreds`)) {
             return { valid: false, reason: "AWS credentials are not set" };
         }
+        if((await runCommand(`stat -f %A ~/.awscreds`)).trim() !== '755') {
+            return { valid: false, reason: "AWS credentials has wrong chmod" };
+        }
         return { valid: true };
     }
 
@@ -17,7 +20,9 @@ export class AwsCreds extends Step {
     }
 
     async installStep() {
-        runCommand(`touch ~/.awscreds`);
-        runCommand(`chmod +x ~/.awscreds`);
+        console.log("Create .awscreds file")
+        await runCommand(`touch ~/.awscreds`);
+        console.log("Fix permissions on .awscreds file")
+        await runCommand(`chmod +x ~/.awscreds`);
     }
 }
