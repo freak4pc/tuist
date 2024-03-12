@@ -4,7 +4,7 @@ import { Step } from '../step';
 import { runCommand } from 'lib/utils/exec';
 import { hasCommand } from 'lib/utils/checks';
 
-export class XCodeInstall extends Step {
+export class XcodeInstall extends Step {
     constructor() {
         super();
     }
@@ -24,7 +24,7 @@ export class XCodeInstall extends Step {
     }
 
     name() {
-        return "Install XCode";
+        return "Install Xcode";
     }
 
     async installStep() {

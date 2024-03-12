@@ -6,7 +6,7 @@ import { InstallHomebrew } from "./steps/prepare/installhomebrew";
 import { InstallNvm } from "./steps/prepare/nvm";
 import { InstallPipPackages } from "./steps/prepare/pip-packages";
 import { SetEnvVariable } from "./steps/prepare/setenv";
-import { XCodeInstall } from "./steps/prepare/xcode";
+import { XcodeInstall } from "./steps/prepare/xcode";
 import { NpmAuth } from './steps/auth/npmauth';
 import { BrewAddRepos } from './steps/prepare/brew-add-repos';
 import { InstallOkteto } from './steps/prepare/install-okteto';
@@ -23,7 +23,7 @@ import { Step } from './steps/step';
 
 export const basicSteps: Step[] = [
     new CreateDevelopmentFolder(),
-    new XCodeInstall(),
+    new XcodeInstall(),
     new InstallHomebrew(),
     new InstallIterm(),
     new InstallGit(),
