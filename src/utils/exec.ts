@@ -1,11 +1,11 @@
-import childProcess from 'child_process';
+import childProcess, { ChildProcess } from 'child_process';
 import util from 'util';
 import fs from "fs";
 import os from "os"
 
 const exec = util.promisify(childProcess.exec);
 
-export async function runCommand(command: string, options: Parameters<typeof exec>[1] = {}, { printWhile = false, detailedError = true, onData }: {detailedError?: boolean, printWhile?: boolean, onData?: (data: string) => void } = {}): Promise<string> {
+export async function runCommand(command: string, options: Parameters<typeof exec>[1] = {}, { printWhile = false, detailedError = true, onData }: {detailedError?: boolean, printWhile?: boolean, onData?: (data: string, childProcess: ChildProcess) => void } = {}): Promise<string> {
     return new Promise((resolve, reject) => {
         if((command.includes("nvm")) && fs.existsSync('/bin/zsh') && fs.existsSync(`${os.homedir()}/.zshrc`)) {
             process.env.PREFIX = "";
@@ -29,12 +29,20 @@ export async function runCommand(command: string, options: Parameters<typeof exe
                 resolve(stdout as string);
             }
         });
+        execRes.stderr?.on('data', (data) => {
+            if(printWhile)  {
+                console.log(data.toString());
+            }
+            if(onData) {
+                onData(data.toString(), execRes);
+            }
+        });
         execRes.stdout?.on('data', (data) => {
             if(printWhile) {
                 console.log(data.toString());
             }
             if(onData) {
-                onData(data.toString());
+                onData(data.toString(), execRes);
             }
         });
     });

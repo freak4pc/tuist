@@ -32,6 +32,17 @@ export class GithubAuth extends Step {
             open("https://github.com/settings/emails");
         }
         console.log("Let's login to github...");
-        await runCommand('gh auth login --git-protocol ssh --web --hostname github.com');
+        await runCommand('gh auth login --git-protocol ssh --web --hostname github.com', {} , {
+            async onData(data, childProcess) {
+                childProcess.stdin?.write("\n");
+                childProcess.stdin?.end();
+                const code = /code: ([0-9A-Z\-]+)/.exec(data);
+                if(data.includes("https://github.com/login/device")) {
+                    console.log(`Copy the code ${code?.[0]} and press any key to complete login...`);
+                    await pressAnyKeyToContinue();
+                    open("https://github.com/login/device");
+                }
+            },
+        });
     }
 }
