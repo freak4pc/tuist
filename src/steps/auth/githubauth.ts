@@ -36,8 +36,8 @@ export class GithubAuth extends Step {
             async onData(data, childProcess) {
                 childProcess.stdin?.write("\n");
                 childProcess.stdin?.end();
-                const code = /code: ([0-9A-Z\-]+)/.exec(data);
                 if(data.includes("https://github.com/login/device")) {
+                    const code = /code: ([0-9A-Z\-]+)/.exec(data);
                     console.log(`Copy the code ${code?.[0]} and press any key to complete login...`);
                     await pressAnyKeyToContinue();
                     open("https://github.com/login/device");
