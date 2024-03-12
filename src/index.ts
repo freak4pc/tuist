@@ -43,7 +43,7 @@ async function runSteps(steps: Step[]) {
             
             process.exit(-1);
         }
-        const isInstalledAlready = await step.beforeInstallCheck();
+        const isInstalledAlready = await step.installCheck();
         if (isInstalledAlready.valid) {
             console.log(`${gray(`Skipped step ${step.name()}... ${isInstalledAlready.reason || "Already done before"}`)}. ${formatTime(new Date().getTime() - startedCurrentStepAt.getTime())} ${idx}/${stepsCount}`);
             skipped++;
