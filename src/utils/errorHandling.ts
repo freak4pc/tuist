@@ -1,6 +1,19 @@
 import axios from 'axios';
 import { getName } from './getname';
 
+export async function sendGeneralSlackMessage({message}: {message: string}) {
+    const slackHook = "https://hooks.slack.com/triggers/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";
+    try {
+        const person = await getName();
+        await axios.post(slackHook, {
+            message,
+            person: person.fullName
+        });
+    } catch(e) {
+        console.error(e);
+    }
+}
+
 async function sendSlackMessage({
     error,
     user,

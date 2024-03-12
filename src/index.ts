@@ -5,14 +5,16 @@ import { pressAnyKeyToContinue } from './utils/question';
 import { Step } from './steps/step';
 import { formatTime } from './utils/time';
 import { basicSteps } from './basicSteps';
-import { reportError } from './utils/errorHandling';
+import { reportError, sendGeneralSlackMessage } from './utils/errorHandling';
 
 export async function main() {
+    await sendGeneralSlackMessage({ message: "Started setup" });
     const name = await getName();
     console.log(`Hello ${yellow(name.fullName)}! Let's set you up!`)
 
     let startedAllAt = new Date();
     let { skipped, stepsCount } = await runSteps(basicSteps);
+    await sendGeneralSlackMessage({ message: `Finished setup in ${formatTime(new Date().getTime() - startedAllAt.getTime())}` });
     console.log(`all steps done in ${formatTime(new Date().getTime() - startedAllAt.getTime())}
     skipped ${skipped} steps / ${stepsCount} total steps`);
     console.log(`Press any key to finish...`);
