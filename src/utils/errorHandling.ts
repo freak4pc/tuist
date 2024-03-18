@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios/dist/node/axios.cjs');
 import { getName } from './getname';
 
 export async function sendGeneralSlackMessage({message}: {message: string}) {
