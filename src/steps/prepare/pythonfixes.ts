@@ -42,7 +42,7 @@ export class PythonFixes extends Step {
         console.log("setting PYENV_ROOT");
         await runCommand(`echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc`);
         console.log("set to current shell");
-        await runCommand(`export PYENV_ROOT="$HOME/.pyenv`);
+        await runCommand(`export PYENV_ROOT="$HOME/.pyenv"`);
 
         console.log("adding pyenv to path");
         await runCommand(`echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc`);
