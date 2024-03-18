@@ -27,11 +27,17 @@ export class PythonFixes extends Step {
     async installStep() {
         console.log("install python fixes!");
 
-        console.log("installing python 3.10.13");
-        await runCommand(`arch -arm64 pyenv install 3.10.13`);
+        const installedVersions = (await runCommand(`pyenv versions`)).trim();
 
-        console.log("installing python 2.7.18");
-        await runCommand(`arch -arm64 pyenv install 2.7.18`);
+        if(!installedVersions.includes("3.10.13")) {
+            console.log("installing python 3.10.13");
+            await runCommand(`arch -arm64 pyenv install 3.10.13`);
+        }
+
+        if(!installedVersions.includes("2.7.18")) {
+            console.log("installing python 2.7.18");
+            await runCommand(`arch -arm64 pyenv install 2.7.18`);
+        }
 
         console.log("setting PYENV_ROOT");
         await runCommand(`echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc`);
