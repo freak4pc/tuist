@@ -3,7 +3,7 @@ export abstract class Step {
         try {
             await this.installStep();
         } catch(e: any) {
-            return { success: false, error: e, reason: "Error during installation" }
+            return { success: false, error: e, reason: `Error during installation. Error: ${e.message}` }
         }
         const isInstalledNow = await this.installCheck();
         return { success: isInstalledNow.valid, reason: isInstalledNow.reason};
