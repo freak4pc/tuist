@@ -7,7 +7,7 @@ export async function hasCommand(command: string): Promise<boolean> {
     await runCommand(command, {}, { detailedError: false });
     return true;
   } catch (e: any) {
-    if (e.message.includes("command not found")) {
+    if (e.message.toLowerCase().includes("command not found")) {
       return false;
     }
     if (e.message.toLowerCase().includes("can't find")) {
