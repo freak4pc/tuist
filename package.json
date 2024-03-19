@@ -15,6 +15,7 @@
     "@types/node": "^20.11.25",
     "@types/openurl": "^1.0.3",
     "@types/prompt-sync": "^4.2.3",
+    "@types/prompts": "^2.4.9",
     "esbuild": "^0.20.1",
     "nexe": "^4.0.0-rc.4",
     "pkg": "^5.8.1",
@@ -26,11 +27,12 @@
   },
   "dependencies": {
     "add": "^2.0.6",
-    "axios": "^1.6.7",
+    "axios": "0.27",
     "console-log-colors": "^0.4.0",
     "open": "^10.1.0",
     "openurl": "^1.1.1",
     "prompt-sync": "^4.2.0",
+    "prompts": "^2.4.2",
     "yarn": "^1.22.21"
   }
 }
