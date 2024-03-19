@@ -58,7 +58,7 @@ async function runSteps(steps: Step[]) {
 
       process.exit(-1);
     }
-    const isInstalledAlready = await step.installCheck();
+    const isInstalledAlready = await step.checkIfShouldInstall();
     if (isInstalledAlready.valid) {
       console.log(
         `${gray(
