@@ -7,9 +7,9 @@ export abstract class Step {
     error?: Error;
   }> {
     try {
-      await this.installStep();
       // reload env variables
       await runCommand(`source ~/.zshrc > /dev/null 2>&1 || true`);
+      await this.installStep();
     } catch (e: any) {
       return {
         success: false,
