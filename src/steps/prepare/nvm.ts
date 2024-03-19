@@ -26,7 +26,7 @@ export class InstallNvm extends Step {
 
     let list = "";
     try {
-      list = await runCommand("nvm list");
+      list = await runCommand("nvm list", {}, { detailedError: false });
     } catch (e: any) {
       if (e.message.includes("N/A")) {
         return {
@@ -34,6 +34,7 @@ export class InstallNvm extends Step {
           reason: "Nvm is not installed. No installed node versions",
         };
       }
+      return { valid: false, reason: `Nvm error ${e.message}` };
     }
 
     if (!list.includes("v16.14")) {

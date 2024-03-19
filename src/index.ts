@@ -6,7 +6,6 @@ import { Step } from "./steps/step";
 import { formatTime } from "./utils/time";
 import { basicSteps } from "./basicSteps";
 import { reportError, sendGeneralSlackMessage } from "./utils/errorHandling";
-import { tryFunc } from "./utils/errorUtils";
 
 export async function main() {
   await sendGeneralSlackMessage({ message: "Started setup" });
@@ -38,24 +37,7 @@ async function runSteps(steps: Step[]) {
   for (const step of steps) {
     idx++;
     const startedCurrentStepAt = new Date();
-    const { error: checkError, result: canInstall } = await tryFunc(
-      async () => await step.checkPreinstall()
-    );
-    if (checkError) {
-      console.error(
-        `${red(`Can't run step ${step.name()}.`)} ${idx}/${stepsCount}`
-      );
-      console.error(`reason: ${checkError}`);
-      await reportError({
-        step: step.name(),
-        error: checkError.message || "",
-      });
-      console.error("Please write in #devs4devs for help.");
-      console.error(`Press any key to open #devs4devs channel`);
-      await pressAnyKeyToContinue();
-      open("https://app.slack.com/client/T024J3LAA/C034VLARPJS");
-      process.exit(-1);
-    }
+    const canInstall = await step.checkIfCanInstall();
     if (!canInstall.valid) {
       console.error(
         `${red(`Can't run step ${step.name()}.`)} ${idx}/${stepsCount}`

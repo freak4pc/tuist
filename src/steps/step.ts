@@ -21,12 +21,44 @@ export abstract class Step {
     return { success: isInstalledNow.valid, reason: isInstalledNow.reason };
   }
 
+  async checkIfCanInstall(): Promise<{
+    valid: boolean;
+    reason?: string;
+    fixAction?: () => Promise<void>;
+  }> {
+    try {
+      const isInstalledNow = await this.checkPreinstall();
+      return isInstalledNow;
+    } catch (e: any) {
+      return {
+        valid: false,
+        reason: `Error during check. Error: ${e.message}`,
+      };
+    }
+  }
+
   async checkPreinstall(): Promise<{
     valid: boolean;
     reason?: string;
     fixAction?: () => Promise<void>;
   }> {
     return { valid: true, reason: "Can install" };
+  }
+
+  async checkIfShouldInstall(): Promise<{
+    valid: boolean;
+    reason?: string;
+    fixAction?: () => Promise<void>;
+  }> {
+    try {
+      const isInstalledNow = await this.installCheck();
+      return isInstalledNow;
+    } catch (e: any) {
+      return {
+        valid: false,
+        reason: `Error during check. Error: ${e.message}`,
+      };
+    }
   }
 
   abstract installCheck(): Promise<{ valid: boolean; reason?: string }>;
