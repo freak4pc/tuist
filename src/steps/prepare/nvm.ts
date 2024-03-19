@@ -24,15 +24,27 @@ export class InstallNvm extends Step {
       };
     }
 
-    if (!(await runCommand("nvm list")).includes("v16.14")) {
+    let list = "";
+    try {
+      list = await runCommand("nvm list");
+    } catch (e: any) {
+      if (e.message.includes("N/A")) {
+        return {
+          valid: false,
+          reason: "Nvm is not installed. No installed node versions",
+        };
+      }
+    }
+
+    if (!list.includes("v16.14")) {
       return { valid: false, reason: "Node 16.14 is not installed" };
     }
 
-    if (!(await runCommand("nvm list")).includes("v18.12")) {
+    if (!list.includes("v18.12")) {
       return { valid: false, reason: "Node 18.12 is not installed" };
     }
 
-    if (!(await runCommand("nvm list")).includes("v18.19")) {
+    if (!list.includes("v18.19")) {
       return { valid: false, reason: "Node 18.19 is not installed" };
     }
 
