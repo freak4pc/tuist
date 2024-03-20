@@ -47,7 +47,16 @@ export class GitClone extends Step {
 
   async installCheck() {
     if (!fs.existsSync(this.destination)) {
-      return { valid: false, reason: "dotfiles folder does not exist" };
+      return {
+        valid: false,
+        reason: `Folder ${this.destination} folder does not exist`,
+      };
+    }
+    if (!fs.existsSync(`${this.destination}/.git`)) {
+      return {
+        valid: false,
+        reason: `Folder ${this.destination} is not a git repo`,
+      };
     }
     return { valid: true };
   }
@@ -58,6 +67,7 @@ export class GitClone extends Step {
       `source ~/.zshrc > /dev/null 2>&1 || true && gh repo clone ${this.repo} ${this.destination}`,
       {},
       {
+        printWhile: true,
         onData: (data, childProcess) => {
           if (data.includes("Are you sure you want to continue connecting")) {
             childProcess.stdin?.write("yes\n");
