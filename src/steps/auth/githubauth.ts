@@ -1,3 +1,4 @@
+import fs from "fs";
 import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
 import { pressAnyKeyToContinue, yesOrNo } from "lib/utils/question";
@@ -15,6 +16,15 @@ export class GithubAuth extends Step {
         return { valid: false, reason: "Github auth token is not set" };
       }
     }
+
+    if (!fs.existsSync(`${process.env.HOME}/.ssh`)) {
+      return { valid: false, reason: "No ssh key folder" };
+    }
+    const sshFiles = await runCommand(`ls ${process.env.HOME}/.ssh`);
+    if (!sshFiles.includes("id_")) {
+      return { valid: false, reason: `No ssh id file found ${sshFiles}` };
+    }
+
     try {
       await runCommand(
         "source ~/.zshrc > /dev/null 2>&1 || true && ssh -T git@github.com"
