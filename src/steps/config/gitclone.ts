@@ -19,7 +19,11 @@ export class GitClone extends Step {
 
   async checkPreinstall() {
     try {
-      await runCommand(`gh repo view ${this.repo}`);
+      await runCommand(
+        `gh repo view ${this.repo}`,
+        {},
+        { detailedError: false }
+      );
     } catch (e: any) {
       if (e.message.toLowerCase().includes("could not resolve")) {
         return {
