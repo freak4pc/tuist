@@ -21,7 +21,7 @@ jobs:
         with:
           bump_version_scheme: minor
           tag_prefix: v
-       - name: download artifacts
+      - name: download artifacts
         uses: actions/download-artifact@v1
         with:
           name: uploads   
