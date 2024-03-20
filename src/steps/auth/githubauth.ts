@@ -27,7 +27,9 @@ export class GithubAuth extends Step {
 
     try {
       await runCommand(
-        "source ~/.zshrc > /dev/null 2>&1 || true && ssh -T git@github.com"
+        "source ~/.zshrc > /dev/null 2>&1 || true && ssh -T git@github.com",
+        {},
+        { detailedError: false }
       );
     } catch (e: any) {
       if (e.message.includes("Permission denied")) {
