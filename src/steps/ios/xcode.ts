@@ -37,9 +37,18 @@ export class InstallXcode extends Step {
         console.log(`Trying AppStore Connect for ${username}...`)
 
         console.log("Installing Latest Xcode...")
+
+        // Install
         await runCommand(
-            `XCODES_USERNAME=${username} XCODES_PASSWORD=${password} xcodes install ${version} --select --experimental-unxip`, {},
+            `XCODES_USERNAME=${username} XCODES_PASSWORD=${password} xcodes install ${version} --experimental-unxip`, {},
             { stdio: Stdio.Inherit }
         );
+
+        // Move to the right place
+        await runCommand(`mv /Applications/Xcode*.app /Applications/Xcode.app`);
+
+        // Select the right version
+        console.log("Selecting Xcode, you'll need to type in your password...")
+        await runCommand(`sudo xcode-select -s /Applications/Xcode.app`, {}, { stdio: Stdio.Inherit });
     }
 }
