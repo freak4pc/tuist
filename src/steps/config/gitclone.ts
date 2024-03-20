@@ -1,6 +1,6 @@
 import fs from "fs";
 import { Step } from "../step";
-import { runCommand } from "lib/utils/exec";
+import { Stdio, runCommand } from "lib/utils/exec";
 import { getPath } from "lib/utils/paths";
 import { pressAnyKeyToContinue } from "lib/utils/question";
 import { open } from "openurl";
@@ -8,10 +8,12 @@ import { open } from "openurl";
 export class GitClone extends Step {
   repo: string;
   destination: string;
-  constructor(repo: string, destination: string) {
+  showOutput: boolean = false;
+  constructor(repo: string, destination: string, showOutput: boolean = false) {
     super();
     this.repo = repo;
     this.destination = getPath(destination);
+    this.showOutput = showOutput;
   }
 
   name() {
@@ -67,7 +69,7 @@ export class GitClone extends Step {
       `source ~/.zshrc > /dev/null 2>&1 || true && gh repo clone org-Dapulse@github.com:${this.repo}.git ${this.destination}`,
       {},
       {
-        printWhile: true,
+        stdio: this.showOutput ? Stdio.Inherit : Stdio.Ignore,
         onData: (data, childProcess) => {
           if (
             data

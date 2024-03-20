@@ -27,6 +27,6 @@ export class InstallPipPackages extends Step {
     }
     async installStep() {
         console.log(`install pip packages! ${this.packages.join(', ')}`)
-        await runCommand(`pip3 install ${this.packages.join(' ')}`);
+        await runCommand(`pip3 install --break-system-packages ${this.packages.join(' ')}`);
     }
 }

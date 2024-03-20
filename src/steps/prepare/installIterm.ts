@@ -1,6 +1,5 @@
 import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
-import fs from 'fs';
 import { hasFile } from "lib/utils/checks";
 
 export class InstallIterm extends Step {

@@ -1,10 +1,7 @@
-import fs from 'fs';
-import os from "os";
 import { Step } from '../step';
 import { runCommand } from 'lib/utils/exec';
-import { hasCommand } from 'lib/utils/checks';
 
-export class XcodeInstall extends Step {
+export class InstallXcodeCLI extends Step {
     constructor() {
         super();
     }

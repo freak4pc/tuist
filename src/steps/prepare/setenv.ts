@@ -1,5 +1,3 @@
-import fs from 'fs';
-import os from "os";
 import { Step } from '../step';
 import { runCommand } from 'lib/utils/exec';
 import { hasEnvSetTo } from 'lib/utils/checks';

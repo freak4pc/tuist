@@ -1,0 +1,40 @@
+import { Step } from '../step';
+import { Stdio, runCommand } from 'lib/utils/exec';
+import { askQuestion, askPassword, pressAnyKeyToContinue, yesOrNo } from "lib/utils/question";
+
+export class InstallXcode extends Step {
+    async installCheck() {
+        try {
+            const version = await runCommand("xcodebuild -version | head -n 1");
+            return { valid: true, reason: `${version.trim()} is installed` };
+        } catch(e: any) {
+            return { valid: false, reason: "Xcode is not installed" };
+        }
+    }
+
+    name() {
+        return "Install Xcode";
+    }
+
+    async installStep() {
+        const version = "--latest"
+        console.log("Let's get Xcode installed for you!");
+
+        const hasAccount = await yesOrNo("Do you have an AppStore Connect Apple ID with a @monday.com email?");
+
+        if(!hasAccount) {
+            console.log("Ask a team member to invite you to monday's AppStore Connect account and run this script again.");
+            await pressAnyKeyToContinue();
+        }
+
+        const username = askQuestion("Apple ID: ");
+        const password = askPassword("Password: ");
+        console.log(`Trying AppStore Connect for ${username}...`)
+
+        console.log("Installing Latest Xcode...")
+        await runCommand(
+            `XCODES_USERNAME=${username} XCODES_PASSWORD=${password} xcodes install ${version} --select --experimental-unxip`, {},
+            { stdio: Stdio.Inherit }
+        );
+    }
+}

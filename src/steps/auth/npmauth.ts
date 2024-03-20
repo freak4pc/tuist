@@ -49,11 +49,11 @@ export class NpmAuth extends Step {
     const password = askPassword("Password: ");
     console.log(`Okay.. Let's connect to npm with ${username}`);
     await runCommand(
-      `nvm use 18.19 && npm login --username ${username} --password ${password}`,
+      `nvm use 18.19 && npm login --username "${username}" --password "${password}"`,
       {},
       {
         printWhile: true,
-        onData: (data) => {
+        async onData(data) {
           const fullUrl =
             /https:\/\/www.npmjs.com\/login\?next=\/login\/cli\/[a-z0-9-]+/.exec(
               data
@@ -61,6 +61,8 @@ export class NpmAuth extends Step {
           if (fullUrl) {
             console.log("Opening browser to complete login...");
             open(fullUrl[0]);
+            console.log("Press any when you're done");
+            await pressAnyKeyToContinue()
           }
         },
       }

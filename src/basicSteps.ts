@@ -6,7 +6,7 @@ import { InstallHomebrew } from "./steps/prepare/installhomebrew";
 import { InstallNvm } from "./steps/prepare/nvm";
 import { InstallPipPackages } from "./steps/prepare/pip-packages";
 import { SetEnvVariable } from "./steps/prepare/setenv";
-import { XcodeInstall } from "./steps/prepare/xcode";
+import { InstallXcodeCLI } from "./steps/prepare/xcode";
 import { NpmAuth } from "./steps/auth/npmauth";
 import { BrewAddRepos } from "./steps/prepare/brew-add-repos";
 import { InstallOkteto } from "./steps/prepare/install-okteto";
@@ -18,12 +18,14 @@ import { GithubAuth } from "./steps/auth/githubauth";
 import { InstallNpmPackages } from "./steps/prepare/npmpackages";
 import { GitClone } from "./steps/config/gitclone";
 import { DotfilesConfig } from "./steps/config/dotfiles-config";
-import { RvmInstaller } from "./steps/prepare/rvm";
 import { Step } from "./steps/step";
+import { InstallXcode } from "./steps/ios/xcode";
+import { InstallMise } from "./steps/ios/mise";
+import { getDevelopmentPath } from "./utils/paths";
 
 export const basicSteps: Step[] = [
   new CreateDevelopmentFolder(),
-  new XcodeInstall(),
+  new InstallXcodeCLI(),
   new InstallHomebrew(),
   new InstallIterm(),
   new InstallGit(),
@@ -83,4 +85,12 @@ export const basicSteps: Step[] = [
 
   new GitClone("DaPulse/dotfiles", "~/dotfiles"),
   new DotfilesConfig(),
+];
+
+export const iOSSteps: Step[] = [
+    new CreateDevelopmentFolder(),
+    new InstallBrewPackages(["xcodesorg/made/xcodes", "aria2"]),
+    new InstallXcode(),
+    new GitClone("DaPulse/iOS", `${getDevelopmentPath()}/iOS`, true),
+    new InstallMise()
 ];

@@ -1,4 +1,4 @@
-import { runCommand } from "lib/utils/exec";
+import { Stdio, runCommand } from "lib/utils/exec";
 import { Step } from "../step";
 
 export class InstallBrewPackages extends Step {
@@ -13,13 +13,13 @@ export class InstallBrewPackages extends Step {
         this.force = force;
         this.cask = cask;
     }
-
     
     async installCheck() {
         for(const curpackage of this.packages) {
             try {
                 const shortName = curpackage.split('/')[curpackage.split('/').length - 1];
                 const showList = await runCommand(`arch -arm64 brew list ${curpackage}`, {}, { detailedError: false });
+
                 if(!showList.includes(shortName)) {
                     console.log("show list", showList, shortName, curpackage)
                     return { valid: false, reason: `Package ${curpackage} is not listed` };
@@ -38,6 +38,6 @@ export class InstallBrewPackages extends Step {
     }
     async installStep() {
         console.log(`install brew packages! ${this.packages.join(', ')}`)
-        await runCommand(`arch -arm64 brew install ${this.force ? '--force ' : ''}${this.cask ? '--cask ' : ''}${this.packages.join(' ')}`);
+        await runCommand(`arch -arm64 brew install ${this.force ? '--force ' : ''}${this.cask ? '--cask ' : ''}${this.packages.join(' ')}`, {}, { stdio: Stdio.Inherit });
     }
 }

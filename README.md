@@ -3,15 +3,22 @@
 Running mndyinstaller:
 1. Download the latest `mndyinstaller` version from 
 https://github.com/DaPulse/mndyinstaller/releases
+
 2. To give the script permissions run
 
-    sudo xattr -r -d com.apple.quarantine ./mndyinstaller
-
-    chmod u+x ./mndyinstaller
+```sh
+sudo xattr -r -d com.apple.quarantine ./mndyinstaller
+chmod u+x ./mndyinstaller
+```
 
 3. Run the script
 
-    ./mndyinstaller
+```sh
+./mndyinstaller
+```
+
+> [!TIP]
+> The default development path is `~/Development`. If you want to customize it, make sure `MONDAY_PATH` is set in your `~/.zshrc` and environment before running this script.
 
 ## Contribute
 The basic steps are in an array at src/basicSteps.ts

@@ -1,21 +1,22 @@
 import fs from 'fs';
-import os from "os";
 import { Step } from '../step';
 import { hasFile } from 'lib/utils/checks';
-import { getPath } from 'lib/utils/paths';
+import { getDevelopmentPath } from 'lib/utils/paths';
 
 export class CreateDevelopmentFolder extends Step {
     developmentFolder: string;
-
+    
     constructor() {
         super();
-        this.developmentFolder = getPath('~/Development');
+        
+        this.developmentFolder = getDevelopmentPath();
     }
+
     async installCheck() {
         if(!hasFile(this.developmentFolder)) {
-            return { valid: false, reason: "Development folder does not exist" };
+            return { valid: false, reason: `Development folder ${this.developmentFolder} does not exist` };
         }
-        return { valid: true };
+        return { valid: true, reason: `Development folder exists at ${this.developmentFolder}` };
     }
 
     name() {

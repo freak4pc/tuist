@@ -1,34 +1,63 @@
-import { red, green, gray, yellow } from "console-log-colors";
+import { red, green, gray, yellow, cyan } from "console-log-colors";
 import { open } from "openurl";
 import { getName } from "./utils/getname";
 import { pressAnyKeyToContinue } from "./utils/question";
 import { Step } from "./steps/step";
 import { formatTime } from "./utils/time";
-import { basicSteps } from "./basicSteps";
+import { basicSteps, iOSSteps } from "./basicSteps";
 import { reportError, sendGeneralSlackMessage } from "./utils/errorHandling";
-import { runCommand } from "./utils/exec";
+import prompts from "prompts";
 
 export async function main() {
   await sendGeneralSlackMessage({ message: "Started setup" });
   const name = await getName();
   console.log(`Hello ${yellow(name.fullName)}! Let's set you up!`);
 
-  let startedAllAt = new Date();
-  let { skipped, stepsCount } = await runSteps(basicSteps);
-  await sendGeneralSlackMessage({
-    message: `Finished setup in ${formatTime(
-      new Date().getTime() - startedAllAt.getTime()
-    )}`,
-  });
-  console.log(`all steps done in ${formatTime(
-    new Date().getTime() - startedAllAt.getTime()
-  )}
-    skipped ${skipped} steps / ${stepsCount} total steps`);
-  console.log(`Press any key to finish...`);
-  await pressAnyKeyToContinue();
+  const flavor = await prompts(
+    {
+      type: 'select',
+      name: 'value',
+      message: 'What kind of developer are you?',
+      choices: [
+        { title: 'Fullstack (General R&D)', description: 'Everything you need to get started in the R&D', value: 'general' },
+        { title: 'iOS', description: 'Everything from R&D + Additional iOS-specific setup', value: 'ios'  }
+      ]
+    }
+   )
+
+   await processSteps(basicSteps, "R&D");
+
+   switch (flavor.value) {
+      case "ios":
+        await processSteps(iOSSteps, "iOS");
+        break;
+      // Add additional flavors down here
+    }
+
+   console.log(green("All done ✨🎉! Time to write some code 👩‍💻👨‍💻"))
+   console.log(`Press any key to finish...`);
+   await pressAnyKeyToContinue();
 }
 
 main();
+
+async function processSteps(steps: Step[], label: string) {
+  console.log(cyan(`Running steps for ${label}`));
+  await sendGeneralSlackMessage({ message: `Running steps for ${label}` });
+  let startedAllAt = new Date();
+  let { skipped, stepsCount } = await runSteps(steps);
+  await sendGeneralSlackMessage({
+    message: `Finished running steps for ${label} in ${formatTime(
+      new Date().getTime() - startedAllAt.getTime()
+    )}`,
+  });
+  console.log();
+  console.log(cyan(`All ${label} steps done in ${formatTime(
+    new Date().getTime() - startedAllAt.getTime()
+  )}
+    skipped ${skipped} steps / ${stepsCount} total steps`));
+  console.log();
+}
 
 async function runSteps(steps: Step[]) {
   let idx = 0;
