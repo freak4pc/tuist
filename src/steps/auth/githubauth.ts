@@ -62,7 +62,7 @@ export class GithubAuth extends Step {
       open("https://github.com/settings/emails");
     }
     console.log("Choose passphrase");
-    const passpharse = askPassword("Passphrase: ");
+    const passpharse = askPassword("Passphrase: ").trim();
     console.log("Create ssh key");
     await runCommand(
       `ssh-keygen -t rsa -m PEM -b 4096 -P "${passpharse}" -f ~/.ssh/id_rsa"`
