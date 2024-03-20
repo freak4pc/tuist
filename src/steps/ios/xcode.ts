@@ -1,10 +1,15 @@
 import { Step } from '../step';
 import { Stdio, runCommand } from 'lib/utils/exec';
 import { askQuestion, askPassword, pressAnyKeyToContinue, yesOrNo } from "lib/utils/question";
+import fs from 'fs';
 
 export class InstallXcode extends Step {
     async installCheck() {
         try {
+            if (!fs.existsSync("/Applications/Xcode.app")) {
+                return { valid: false, reason: "Xcode is not installed" };
+            }
+
             const version = await runCommand("xcodebuild -version | head -n 1");
             return { valid: true, reason: `${version.trim()} is installed` };
         } catch(e: any) {
@@ -32,9 +37,18 @@ export class InstallXcode extends Step {
         console.log(`Trying AppStore Connect for ${username}...`)
 
         console.log("Installing Latest Xcode...")
+
+        // Install
         await runCommand(
-            `XCODES_USERNAME=${username} XCODES_PASSWORD=${password} xcodes install ${version} --select --experimental-unxip`, {},
+            `XCODES_USERNAME=${username} XCODES_PASSWORD=${password} xcodes install ${version} --experimental-unxip`, {},
             { stdio: Stdio.Inherit }
         );
+
+        // Move to the right place
+        await runCommand(`mv /Applications/Xcode*.app /Applications/Xcode.app`);
+
+        // Select the right version
+        console.log("Selecting Xcode, you'll need to type in your password...")
+        await runCommand(`sudo xcode-select -s /Applications/Xcode.app`, {}, { stdio: Stdio.Inherit });
     }
 }

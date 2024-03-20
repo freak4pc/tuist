@@ -31,6 +31,7 @@ export class InstallMise extends Step {
 
     async installStep() {
         await runCommand(`curl https://mise.run | sh`, {}, { stdio: Stdio.Inherit })
+        await runCommand(`echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc`);
         await runCommand(`source ~/.zshrc`)
         if (fs.existsSync(this.projectPath())) {
             await runCommand(`cd ${this.projectPath} && ${this.misePath} install`, {}, { stdio: Stdio.Inherit })
