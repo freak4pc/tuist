@@ -89,7 +89,7 @@ export const basicSteps: Step[] = [
 
 export const iOSSteps: Step[] = [
     new CreateDevelopmentFolder(),
-    new InstallBrewPackages(["xcodesorg/made/xcodes", "aria2"]),
+    new InstallBrewPackages(["xcodesorg/made/xcodes", "aria2", "libyaml"]),
     new InstallXcode(),
     new GitClone("DaPulse/iOS", `${getDevelopmentPath()}/iOS`, true),
     new InstallMise()
