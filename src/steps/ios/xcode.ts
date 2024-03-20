@@ -1,10 +1,15 @@
 import { Step } from '../step';
 import { Stdio, runCommand } from 'lib/utils/exec';
 import { askQuestion, askPassword, pressAnyKeyToContinue, yesOrNo } from "lib/utils/question";
+import fs from 'fs';
 
 export class InstallXcode extends Step {
     async installCheck() {
         try {
+            if (!fs.existsSync("/Applications/Xcode.app")) {
+                return { valid: false, reason: "Xcode is not installed" };
+            }
+
             const version = await runCommand("xcodebuild -version | head -n 1");
             return { valid: true, reason: `${version.trim()} is installed` };
         } catch(e: any) {
