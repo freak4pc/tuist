@@ -55,7 +55,16 @@ export class GitClone extends Step {
   async installStep() {
     console.log(`Cloning Repo '${this.repo}' to ${this.destination}`);
     await runCommand(
-      `source ~/.zshrc > /dev/null 2>&1 || true && gh repo clone ${this.repo} ${this.destination}`
+      `source ~/.zshrc > /dev/null 2>&1 || true && gh repo clone ${this.repo} ${this.destination}`,
+      {},
+      {
+        onData: (data, childProcess) => {
+          if (data.includes("Are you sure you want to continue connecting")) {
+            childProcess.stdin?.write("yes\n");
+            childProcess.stdin?.end();
+          }
+        },
+      }
     );
   }
 }
