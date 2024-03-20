@@ -2,6 +2,7 @@ import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
 import { pressAnyKeyToContinue } from "lib/utils/question";
 import { open } from "openurl";
+import { defaultNpmVersion } from "./nvm";
 
 export class InstallNpmPackages extends Step {
   packages: string[];
@@ -22,7 +23,7 @@ export class InstallNpmPackages extends Step {
       for (const pkg of mndyPackages) {
         try {
           await runCommand(
-            `nvm use 18.19 && npm view ${pkg}`,
+            `nvm use ${defaultNpmVersion} && npm view ${pkg}`,
             {},
             { detailedError: false }
           );
@@ -59,7 +60,7 @@ export class InstallNpmPackages extends Step {
     for (const pkg of this.packages) {
       try {
         const hasPkg = await runCommand(
-          `nvm use 18.19 && npm list -g ${pkg}`,
+          `nvm use ${defaultNpmVersion} && npm list -g ${pkg}`,
           {},
           { detailedError: false }
         );
@@ -79,7 +80,9 @@ export class InstallNpmPackages extends Step {
   async installStep() {
     console.log(`install npm packages! ${this.packages.join(", ")}`);
     await runCommand(
-      `nvm use 18.19 && npm install -g ${this.packages.join(" ")}`
+      `nvm use ${defaultNpmVersion} && npm install -g ${this.packages.join(
+        " "
+      )}`
     );
   }
 }

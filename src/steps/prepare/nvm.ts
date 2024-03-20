@@ -4,6 +4,8 @@ import { Step } from "../step";
 import { runCommand } from "lib/utils/exec";
 import { hasCommand, hasEnvSet, hasFile } from "lib/utils/checks";
 
+export const defaultNpmVersion = "16.14";
+
 export class InstallNvm extends Step {
   constructor() {
     super();
@@ -37,8 +39,11 @@ export class InstallNvm extends Step {
       return { valid: false, reason: `Nvm error ${e.message}` };
     }
 
-    if (!list.includes("v16.14")) {
-      return { valid: false, reason: "Node 16.14 is not installed" };
+    if (!list.includes(`v${defaultNpmVersion}`)) {
+      return {
+        valid: false,
+        reason: `Node ${defaultNpmVersion} is not installed`,
+      };
     }
 
     if (!list.includes("v18.12")) {
@@ -49,7 +54,10 @@ export class InstallNvm extends Step {
       return { valid: false, reason: "Node 18.19 is not installed" };
     }
 
-    return { valid: true, reason: "Already installed nvm && node 16.14" };
+    return {
+      valid: true,
+      reason: `Already installed nvm && node ${defaultNpmVersion}`,
+    };
   }
 
   name() {
@@ -85,7 +93,7 @@ export class InstallNvm extends Step {
     console.log("Installing node 18.19");
     await runCommand("nvm install 18.19");
 
-    console.log("Setting node 16.14 as default");
-    await runCommand("nvm alias default 16.14");
+    console.log(`Setting node ${defaultNpmVersion} as default`);
+    await runCommand(`nvm alias default ${defaultNpmVersion}`);
   }
 }
