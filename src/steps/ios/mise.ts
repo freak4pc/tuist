@@ -34,7 +34,7 @@ export class InstallMise extends Step {
         await runCommand(`echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc`);
         await runCommand(`source ~/.zshrc`)
         if (fs.existsSync(this.projectPath())) {
-            await runCommand(`cd ${this.projectPath} && ${this.misePath} install`, {}, { stdio: Stdio.Inherit })
+            await runCommand(`cd ${this.projectPath()} && ${this.misePath} install`, {}, { stdio: Stdio.Inherit })
         } else {
             console.log(yellow(`⚠️: mise didn't auto-install dependencies since the iOS folder doesn't exist at ${this.projectPath()}. Run 'mise install' in the iOS folder to install dependencies.`))
         }
