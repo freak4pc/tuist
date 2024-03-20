@@ -21,7 +21,7 @@ export class GitClone extends Step {
     try {
       await runCommand(`gh repo view ${this.repo}`);
     } catch (e: any) {
-      if (e.message.toLowerCase().includes("Could not resolve")) {
+      if (e.message.toLowerCase().includes("could not resolve")) {
         return {
           valid: false,
           reason: `No permissions to repo ${this.repo}`,
