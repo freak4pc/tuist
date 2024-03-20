@@ -24,11 +24,12 @@ jobs:
           cmd: build
       - name: Bump version and push tag
         id: tag
-        uses: anothrNick/github-tag-action@1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
-          WITH_V: true
-          PRERELEASE: false
+        run: |
+          VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
+          git tag -a $VERSION -m "new release"
+          git push origin $VERSION
+          echo "::set-output name=new_tag::$VERSION"
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
