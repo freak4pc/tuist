@@ -86,5 +86,15 @@ export class GithubAuth extends Step {
         },
       }
     );
+
+    console.log(
+      "Now please make sure the ssh key is added to your GitHub account"
+    );
+    console.log("And click Configure SSO");
+    console.log("Press any key to open github settings to check it");
+    await pressAnyKeyToContinue();
+    open("https://github.com/settings/keys");
+    console.log("Press any key once you validated");
+    await pressAnyKeyToContinue();
   }
 }
