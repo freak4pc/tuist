@@ -9,7 +9,7 @@ jobs:
   publish-release:
 
     runs-on: ubuntu-18.04
-    needs: build-macos
+    needs: [build-macos]
 
     steps:
       - uses: actions/checkout@v2
