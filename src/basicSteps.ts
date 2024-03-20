@@ -81,6 +81,6 @@ export const basicSteps: Step[] = [
 
   new InstallNpmPackages(["@mondaydotcomorg/monday-dev-cli"]),
 
-  new GitClone("org-Dapulse@github.com:DaPulse/dotfiles.git", "~/dotfiles"),
+  new GitClone("DaPulse/dotfiles", "~/dotfiles"),
   new DotfilesConfig(),
 ];
