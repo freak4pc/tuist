@@ -15,6 +15,15 @@ export class GithubAuth extends Step {
         return { valid: false, reason: "Github auth token is not set" };
       }
     }
+    try {
+      await runCommand(
+        "source ~/.zshrc > /dev/null 2>&1 || true && ssh -T git@github.com"
+      );
+    } catch (e: any) {
+      if (e.message.includes("Permission denied")) {
+        return { valid: false, reason: "SSH key is incorrect" };
+      }
+    }
 
     return { valid: true, reason: "already have a gh auth token" };
   }

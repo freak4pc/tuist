@@ -69,7 +69,11 @@ export class GitClone extends Step {
       {
         printWhile: true,
         onData: (data, childProcess) => {
-          if (data.includes("Are you sure you want to continue connecting")) {
+          if (
+            data
+              .toLocaleLowerCase()
+              .includes("are you sure you want to continue connecting")
+          ) {
             childProcess.stdin?.write("yes\n");
             childProcess.stdin?.end();
           }
