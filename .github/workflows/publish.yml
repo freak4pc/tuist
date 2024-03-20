@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish-release:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
@@ -39,5 +39,3 @@ jobs:
           tag: ${{ steps.release.outputs.tag_name }}
           overwrite: true
           body: "Monday.com installer"
-      
-      
