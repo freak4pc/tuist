@@ -56,7 +56,7 @@ export class GithubAuth extends Step {
     }
     console.log("Let's login to github...");
     await runCommand(
-      "gh auth login --git-protocol ssh --web --hostname github.com",
+      "source ~/.zshrc > /dev/null 2>&1 || true && gh auth login --git-protocol ssh --web --hostname github.com",
       {},
       {
         async onData(data, childProcess) {
