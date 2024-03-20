@@ -25,7 +25,7 @@ export class GitClone extends Step {
         return {
           valid: false,
           reason: `No permissions to repo ${this.repo}`,
-          action: async () => {
+          fixAction: async () => {
             console.log(
               `Press any key to open the form to request access to repo ${this.repo}.`
             );
