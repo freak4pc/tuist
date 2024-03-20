@@ -3,6 +3,7 @@ import { Step } from "../step";
 import { runCommand } from "lib/utils/exec";
 import { getPath } from "lib/utils/paths";
 import { pressAnyKeyToContinue } from "lib/utils/question";
+import { open } from "openurl";
 
 export class GitClone extends Step {
   repo: string;
