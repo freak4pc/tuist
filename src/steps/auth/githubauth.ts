@@ -1,13 +1,13 @@
 import fs from "fs";
-import { runCommand } from "lib/utils/exec";
+import { Stdio, runCommand } from "lib/utils/exec";
 import { Step } from "../step";
 import {
   askPassword,
-  askQuestion,
   pressAnyKeyToContinue,
   yesOrNo,
 } from "lib/utils/question";
 import { open } from "openurl";
+import { getPath } from "lib/utils/paths";
 
 export class GithubAuth extends Step {
   async installCheck() {
@@ -63,15 +63,39 @@ export class GithubAuth extends Step {
     }
     console.log("Choose passphrase");
     const passpharse = askPassword("Passphrase: ").trim();
-    console.log("Create ssh key");
+    console.log("Creating SSH key");
+    const keyFile = getPath("~/.ssh/id_ed25519");
     await runCommand(
-      `ssh-keygen -t rsa -m PEM -b 4096 -P "${passpharse}" -f ~/.ssh/id_rsa`
+      `ssh-keygen -t ed25519 -P "${passpharse}" -f ${keyFile}`
     );
+
+    await runCommand(`eval "$(ssh-agent -s)"`)
+    const configPath = getPath("~/.ssh/config");
+
+    if(!fs.existsSync(configPath)) {
+      await runCommand(`touch ${configPath}`)
+    }
+
+    fs.appendFileSync(
+      configPath, `
+Host github.com
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ${keyFile}`
+    )
+
+    if (passpharse.trim().length == 0) {
+      await runCommand(`ssh-add ${keyFile}`);
+    } else {
+      await runCommand(`ssh-add --apple-use-keychain ${keyFile}`);
+    }
+
     console.log("Let's login to github...");
     await runCommand(
       "source ~/.zshrc > /dev/null 2>&1 || true && gh auth login --git-protocol ssh --web --hostname github.com",
       {},
       {
+        stdio: Stdio.Inherit,
         async onData(data, childProcess) {
           childProcess.stdin?.write("\n");
           childProcess.stdin?.end();
@@ -91,8 +115,9 @@ export class GithubAuth extends Step {
       "Now please make sure the ssh key is added to your GitHub account"
     );
     console.log("And click Configure SSO");
-    console.log("Press any key to open github settings to check it");
+    console.log("Press any key to open GitHub Settings to confirm it");
     await pressAnyKeyToContinue();
+
     open("https://github.com/settings/keys");
     console.log("Press any key once you validated");
     await pressAnyKeyToContinue();

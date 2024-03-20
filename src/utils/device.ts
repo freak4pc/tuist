@@ -7,3 +7,7 @@ export async function getName() {
         name: fullName.split(' ')[0]
     } 
 }
+
+export async function getDevice() {
+    return (await runCommand("sysctl -n machdep.cpu.brand_string")).trim()
+}

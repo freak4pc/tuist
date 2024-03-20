@@ -1,6 +1,5 @@
 const axios = require("axios");
-import { runCommand } from "./exec";
-import { getName } from "./getname";
+import { getDevice, getName } from "./device";
 
 export async function sendGeneralSlackMessage({
   message,
@@ -11,7 +10,7 @@ export async function sendGeneralSlackMessage({
     "https://hooks.slack.com/triggers/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";
   try {
     const person = await getName();
-    const device = (await runCommand("sysctl -n machdep.cpu.brand_string")).trim()
+    const device = await getDevice();
 
     await axios.post(slackHook, {
       message,

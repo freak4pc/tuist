@@ -1,6 +1,6 @@
 import { red, green, gray, yellow, cyan } from "console-log-colors";
 import { open } from "openurl";
-import { getName } from "./utils/getname";
+import { getName } from "./utils/device";
 import { pressAnyKeyToContinue } from "./utils/question";
 import { Step } from "./steps/step";
 import { formatTime } from "./utils/time";
