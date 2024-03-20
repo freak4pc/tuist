@@ -65,7 +65,7 @@ export class GithubAuth extends Step {
     const passpharse = askPassword("Passphrase: ").trim();
     console.log("Create ssh key");
     await runCommand(
-      `ssh-keygen -t rsa -m PEM -b 4096 -P "${passpharse}" -f ~/.ssh/id_rsa"`
+      `ssh-keygen -t rsa -m PEM -b 4096 -P "${passpharse}" -f ~/.ssh/id_rsa`
     );
     console.log("Let's login to github...");
     await runCommand(
