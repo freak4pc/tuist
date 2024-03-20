@@ -1,7 +1,12 @@
 import fs from "fs";
 import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
-import { pressAnyKeyToContinue, yesOrNo } from "lib/utils/question";
+import {
+  askPassword,
+  askQuestion,
+  pressAnyKeyToContinue,
+  yesOrNo,
+} from "lib/utils/question";
 import { open } from "openurl";
 
 export class GithubAuth extends Step {
@@ -56,6 +61,12 @@ export class GithubAuth extends Step {
       await pressAnyKeyToContinue();
       open("https://github.com/settings/emails");
     }
+    console.log("Choose passphrase");
+    const passpharse = askPassword("Passphrase: ");
+    console.log("Create ssh key");
+    await runCommand(
+      `ssh-keygen -t rsa -m PEM -b 4096 -P "${passpharse}" -f ~/.ssh/id_rsa"`
+    );
     console.log("Let's login to github...");
     await runCommand(
       "source ~/.zshrc > /dev/null 2>&1 || true && gh auth login --git-protocol ssh --web --hostname github.com",
