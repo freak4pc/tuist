@@ -71,7 +71,7 @@ export class InstallNvm extends Step {
     await runCommand(". $HOME/.nvm/nvm.sh");
 
     console.log("brewing nvm");
-    await runCommand("arch -arm64 brew install nvm");
+    await runCommand("brew install nvm");
 
     console.log("Sourcing nvm");
     await runCommand("source $(brew --prefix nvm)/nvm.sh");

@@ -58,7 +58,7 @@ export async function runCommand(command: string, options: Parameters<typeof exe
             if(code == 0) {
                 resolve(output);
             } else {
-                reject(new Error(`Command exited with code ${code}`));
+                reject(new Error(output));
             }
         });
     });

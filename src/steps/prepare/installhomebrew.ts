@@ -1,10 +1,10 @@
-import { runCommand } from "lib/utils/exec";
+import { Stdio, runCommand } from "lib/utils/exec";
 import { Step } from "../step";
 import { hasCommand } from "lib/utils/checks";
 
 export class InstallHomebrew extends Step {
   async installCheck() {
-    if (!(await hasCommand(`arch -arm64 brew --version`))) {
+    if (!(await hasCommand(`brew --version`))) {
       return {
         valid: false,
         reason: "Brew is not installed. Command brew not found.",
@@ -20,7 +20,9 @@ export class InstallHomebrew extends Step {
   async installStep() {
     console.log("install brew!");
     await runCommand(
-      `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+      `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`,
+      {},
+      { stdio: Stdio.Inherit }
     );
 
     // add homebrew to path

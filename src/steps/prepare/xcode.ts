@@ -1,6 +1,6 @@
 import { pressAnyKeyToContinue } from 'lib/utils/question';
 import { Step } from '../step';
-import { runCommand } from 'lib/utils/exec';
+import { Stdio, runCommand } from 'lib/utils/exec';
 
 export class InstallXcodeCLI extends Step {
     constructor() {
@@ -27,8 +27,8 @@ export class InstallXcodeCLI extends Step {
 
     async installStep() {
         console.log("Installing Xcode Command Line Tools")
-        await runCommand('xcode-select --install');
-        console.log("An installer window should now open. Please click the \"Install\" button to install the command line tools.\nPress any key when the installation is done.")
-        await pressAnyKeyToContinue();
+        // This is a hack to trick the system to use the softwareupdate utility for the Xcode CLI
+        await runCommand(`touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress;`)
+        await runCommand(`PROD=$(softwareupdate -l | grep "\*.*Command Line" | tail -n 1 | sed 's/^[^C]* //') && softwareupdate -i "$PROD" --verbose;`, {}, { stdio: Stdio.Inherit });
     }
 }

@@ -35,12 +35,12 @@ export class PythonFixes extends Step {
 
     if (!installedVersions.includes("3.10.13")) {
       console.log("installing python 3.10.13");
-      await runCommand(`arch -x86_64 pyenv install 3.10.13`);
+      await runCommand(`pyenv install 3.10.13`);
     }
 
     if (!installedVersions.includes("2.7.18")) {
       console.log("installing python 2.7.18");
-      await runCommand(`arch -x86_64 pyenv install 2.7.18`);
+      await runCommand(`pyenv install 2.7.18`);
     }
 
     console.log("setting PYENV_ROOT");

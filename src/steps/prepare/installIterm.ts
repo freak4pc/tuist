@@ -20,6 +20,6 @@ export class InstallIterm extends Step {
     }
 
     async installStep() {
-        await runCommand('arch -arm64 brew install --force iterm2');
+        await runCommand('brew install --force iterm2');
     }
 }

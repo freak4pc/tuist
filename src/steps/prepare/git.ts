@@ -18,6 +18,6 @@ export class InstallGit extends Step {
     }
 
     async installStep() {
-        await runCommand('arch -arm64 brew install git')
+        await runCommand('brew install git')
     }
 }
