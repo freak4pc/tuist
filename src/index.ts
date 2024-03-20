@@ -6,6 +6,7 @@ import { Step } from "./steps/step";
 import { formatTime } from "./utils/time";
 import { basicSteps } from "./basicSteps";
 import { reportError, sendGeneralSlackMessage } from "./utils/errorHandling";
+import { runCommand } from "./utils/exec";
 
 export async function main() {
   await sendGeneralSlackMessage({ message: "Started setup" });

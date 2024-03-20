@@ -17,14 +17,14 @@ export class NpmAuth extends Step {
       return { valid: false, reason: "No .npmrc file found in home directory" };
     }
     try {
-      const whoami = await runCommand("npm whoami");
+      const whoami = await runCommand("nvm use 18.19 && npm whoami");
       if (!whoami || whoami.trim() === "") {
         return { valid: false, reason: "Not logged in to npm" };
       }
     } catch (e: any) {
       return { valid: false, reason: `Npm whoami failed. ${e.message}` };
     }
-    const whoami = await runCommand("npm whoami");
+    const whoami = await runCommand("nvm use 18.19 && npm whoami");
     return { valid: true, reason: `already logged in as ${whoami}` };
   }
 
