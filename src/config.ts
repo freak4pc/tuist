@@ -3,5 +3,5 @@ export function isDevelopment() {
 }
 
 export function isVerbose() {
-  return process.env.VERBOSE === "true" || isDevelopment();
+  return process.env.VERBOSE === "true";
 }
