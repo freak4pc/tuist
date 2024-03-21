@@ -87,14 +87,18 @@ export class GithubAuth extends Step {
       await runCommand(`touch ${configPath}`);
     }
 
-    fs.appendFileSync(
-      configPath,
-      `
+    if (
+      !fs.readFileSync(configPath, "utf-8").includes(`IdentityFile ${keyFile}`)
+    ) {
+      fs.appendFileSync(
+        configPath,
+        `
 Host github.com
   AddKeysToAgent yes
   UseKeychain yes
   IdentityFile ${keyFile}`
-    );
+      );
+    }
 
     console.log("Let's login to github...");
     await runCommand(
