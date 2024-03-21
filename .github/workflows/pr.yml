@@ -1,0 +1,30 @@
+name: Verify mndyinstaller
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  verify-macos:
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          registry-url: https://registry.npmjs.org/
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+      - name: Run build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+      - name: Provide execution permissions
+        run: |
+          sudo xattr -r -d com.apple.quarantine ./bin/mndyinstaller
+          chmod u+x ./bin/mndyinstaller
+      - name: Run mndyinstaller
+        run: ./bin/mndyinstaller
