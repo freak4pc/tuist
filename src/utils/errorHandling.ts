@@ -1,4 +1,5 @@
 const axios = require("axios");
+import { isDevelopment } from "../config";
 import { getDevice, getName } from "./device";
 
 export async function sendGeneralSlackMessage({
@@ -6,6 +7,9 @@ export async function sendGeneralSlackMessage({
 }: {
   message: string;
 }) {
+  if (isDevelopment()) {
+    return;
+  }
   const slackHook =
     "https://hooks.slack.com/triggers/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";
   try {
@@ -30,6 +34,9 @@ async function sendSlackMessage({
   user: string;
   step: string;
 }) {
+  if (isDevelopment()) {
+    return;
+  }
   console.error(`Sending message to slack`);
   const slackHook =
     "https://hooks.slack.com/triggers/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";
@@ -46,6 +53,9 @@ export async function reportError({
   error: string;
   step: string;
 }) {
+  if (isDevelopment()) {
+    return;
+  }
   console.error(`Hold on. We're reporting your issue to the channel `);
   try {
     const user = await getName();
