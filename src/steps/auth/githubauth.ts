@@ -72,6 +72,12 @@ export class GithubAuth extends Step {
         {},
         { stdio: Stdio.Inherit }
       );
+
+      if (passpharse.trim().length == 0) {
+        await runCommand(`ssh-add ${keyFile}`);
+      } else {
+        await runCommand(`ssh-add --apple-use-keychain ${keyFile}`);
+      }
     }
 
     await runCommand(`eval "$(ssh-agent -s)"`);
@@ -89,12 +95,6 @@ Host github.com
   UseKeychain yes
   IdentityFile ${keyFile}`
     );
-
-    if (passpharse.trim().length == 0) {
-      await runCommand(`ssh-add ${keyFile}`);
-    } else {
-      await runCommand(`ssh-add --apple-use-keychain ${keyFile}`);
-    }
 
     console.log("Let's login to github...");
     await runCommand(
