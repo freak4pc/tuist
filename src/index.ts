@@ -35,7 +35,7 @@ export async function main() {
   const flavor = await prompts({
     type: "select",
     name: "value",
-    message: "What kind of developer are you?",
+    message: "Which team are you joining ?",
     choices: [
       {
         title: "Fullstack (General R&D)",
