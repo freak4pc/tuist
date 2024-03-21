@@ -12,6 +12,12 @@ import iOSSteps from "./steps/ios";
 export async function main() {
   await sendGeneralSlackMessage({ message: "Started setup" });
   const name = await getName();
+  console.log(` __    __     _                            _____                               _             
+  / / /\\ \\ \\___| | ___ ___  _ __ ___   ___  /__   \\___     /\\/\\   ___  _ __   __| | __ _ _   _ 
+  \\ \\/  \\/ / _ \\ |/ __/ _ \\| '_ \` _ \\ / _ \\   / /\\/ _ \\   /    \\ / _ \\| '_ \\ / _\` |/ _\` | | | |
+   \\  /\\  /  __/ | (_| (_) | | | | | |  __/  / / | (_) | / /\\/\\ \\ (_) | | | | (_| | (_| | |_| |
+    \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\/   \\___/  \\/    \\/\\___/|_| |_|\\__,_|\\__,_|\\__, |
+                                                                                         |___/ `);
   console.log(`Hello ${yellow(name.fullName)}! Let's set you up!`);
 
   const flavor = await prompts({

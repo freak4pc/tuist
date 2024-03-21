@@ -2,6 +2,7 @@ import childProcess, { ChildProcess } from "child_process";
 import util from "util";
 import fs from "fs";
 import os from "os";
+import { isVerbose } from "../config";
 
 const exec = util.promisify(childProcess.exec);
 
@@ -26,6 +27,7 @@ export async function runCommand(
     onData?: (data: string, childProcess: ChildProcess) => void;
   } = {}
 ): Promise<string> {
+  const shouldPrint = printWhile || isVerbose();
   return new Promise((resolve, reject) => {
     if (
       (command.includes("nvm") || command.includes("mise")) &&
@@ -50,7 +52,7 @@ export async function runCommand(
     execRes.stderr?.on("data", (data) => {
       output += data.toString();
 
-      if (printWhile) {
+      if (shouldPrint) {
         console.log(data.toString());
       }
 
@@ -62,7 +64,7 @@ export async function runCommand(
     execRes.stdout?.on("data", (data) => {
       output += data.toString();
 
-      if (printWhile) {
+      if (shouldPrint) {
         console.log(data.toString());
       }
 
