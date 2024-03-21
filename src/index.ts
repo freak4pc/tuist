@@ -8,8 +8,18 @@ import { reportError, sendGeneralSlackMessage } from "./utils/errorHandling";
 import prompts from "prompts";
 import rndSteps from "./steps/rnd";
 import iOSSteps from "./steps/ios";
+import { getLastStep, setLastStep } from "./utils/remember-last-step";
 
 export async function main() {
+  const started = new Date().getTime();
+  setLastStep("Start app");
+  setTimeout(() => {
+    sendGeneralSlackMessage({
+      message: `Still running setup last step: ${getLastStep()}. Running for ${formatTime(
+        new Date().getTime() - started
+      )}`,
+    });
+  }, 1000 * 60 * 2);
   await sendGeneralSlackMessage({ message: "Started setup" });
   const name = await getName();
   console.log(` __    __     _                            _____                               _             
@@ -19,6 +29,8 @@ export async function main() {
     \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\/   \\___/  \\/    \\/\\___/|_| |_|\\__,_|\\__,_|\\__, |
                                                                                          |___/ `);
   console.log(`Hello ${yellow(name.fullName)}! Let's set you up!`);
+
+  setLastStep("Pick flavor");
 
   const flavor = await prompts({
     type: "select",
@@ -38,8 +50,10 @@ export async function main() {
     ],
   });
 
+  setLastStep("Start rnd Steps");
   await processSteps(rndSteps, "R&D");
 
+  setLastStep(`Start flavor steps ${flavor.value}`);
   switch (flavor.value) {
     case "ios":
       await processSteps(iOSSteps, "iOS");
@@ -47,6 +61,7 @@ export async function main() {
     // Add additional flavors down here
   }
 
+  setLastStep(`Finished all steps`);
   console.log(green("All done ✨🎉! Time to write some code 👩‍💻👨‍💻"));
   console.log(`Press any key to finish...`);
   await pressAnyKeyToContinue();
@@ -80,6 +95,7 @@ async function runSteps(steps: Step[]) {
   const startedAllAt = new Date();
   let skipped = 0;
   for (const step of steps) {
+    setLastStep(`Start step ${step.name()}`);
     idx++;
     const startedCurrentStepAt = new Date();
     const canInstall = await step.checkIfCanInstall();

@@ -7,15 +7,17 @@ export async function sendGeneralSlackMessage({
 }: {
   message: string;
 }) {
-  if (isDevelopment()) {
-    return;
-  }
   const slackHook =
     "https://hooks.slack.com/triggers/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";
   try {
     const person = await getName();
     const device = await getDevice();
-
+    if (isDevelopment()) {
+      console.log(
+        `Would have sent slack message: ${message} ${person.fullName} (Running on ${device})`
+      );
+      return;
+    }
     await axios.post(slackHook, {
       message,
       person: `${person.fullName} (Running on ${device})`,
@@ -35,6 +37,7 @@ async function sendSlackMessage({
   step: string;
 }) {
   if (isDevelopment()) {
+    console.log(`Would have sent slack message: ${error} ${user} ${step}`);
     return;
   }
   console.error(`Sending message to slack`);
