@@ -61,11 +61,11 @@ export class GithubAuth extends Step {
       await pressAnyKeyToContinue();
       open("https://github.com/settings/emails");
     }
-    console.log("Choose passphrase");
-    const passpharse = askPassword("Passphrase: ").trim();
 
     const keyFile = getPath("~/.ssh/id_ed25519");
     if (!fs.existsSync(keyFile)) {
+      console.log("Choose passphrase");
+      const passpharse = askPassword("Passphrase: ").trim();
       console.log("Creating SSH key");
       await runCommand(
         `ssh-keygen -t ed25519 -P "${passpharse}" -f ${keyFile}`,
