@@ -1,5 +1,5 @@
 const axios = require("axios");
-import { isDevelopment } from "../config";
+import { shouldSendSlackData } from "../config";
 import { getDevice, getName } from "./device";
 
 export async function sendGeneralSlackMessage({
@@ -12,7 +12,7 @@ export async function sendGeneralSlackMessage({
   try {
     const person = await getName();
     const device = await getDevice();
-    if (isDevelopment()) {
+    if (shouldSendSlackData()) {
       console.log(
         `Would have sent slack message: ${message} ${person.fullName} (Running on ${device})`
       );
@@ -36,7 +36,7 @@ async function sendSlackMessage({
   user: string;
   step: string;
 }) {
-  if (isDevelopment()) {
+  if (shouldSendSlackData()) {
     console.log(`Would have sent slack message: ${error} ${user} ${step}`);
     return;
   }
@@ -56,7 +56,7 @@ export async function reportError({
   error: string;
   step: string;
 }) {
-  if (isDevelopment()) {
+  if (shouldSendSlackData()) {
     return;
   }
   console.error(`Hold on. We're reporting your issue to the channel `);

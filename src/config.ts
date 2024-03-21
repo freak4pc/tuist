@@ -9,3 +9,7 @@ export function isVerbose() {
 export function shouldSkipInteractivity() {
   return process.env.SKIP_INTERACTIVE_STEPS === "true";
 }
+
+export function shouldSendSlackData() {
+  return !isDevelopment();
+}
