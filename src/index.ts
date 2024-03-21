@@ -13,7 +13,7 @@ import { getLastStep, setLastStep } from "./utils/remember-last-step";
 export async function main() {
   const started = new Date().getTime();
   setLastStep("Start app");
-  setTimeout(() => {
+  const interval = setInterval(() => {
     sendGeneralSlackMessage({
       message: `Still running setup last step: ${getLastStep()}. Running for ${formatTime(
         new Date().getTime() - started
@@ -61,6 +61,7 @@ export async function main() {
     // Add additional flavors down here
   }
 
+  clearInterval(interval);
   setLastStep(`Finished all steps`);
   console.log(green("All done ✨🎉! Time to write some code 👩‍💻👨‍💻"));
   console.log(`Press any key to finish...`);
