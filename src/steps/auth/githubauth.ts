@@ -63,9 +63,16 @@ export class GithubAuth extends Step {
     }
     console.log("Choose passphrase");
     const passpharse = askPassword("Passphrase: ").trim();
-    console.log("Creating SSH key");
+
     const keyFile = getPath("~/.ssh/id_ed25519");
-    await runCommand(`ssh-keygen -t ed25519 -P "${passpharse}" -f ${keyFile}`);
+    if (!fs.existsSync(keyFile)) {
+      console.log("Creating SSH key");
+      await runCommand(
+        `ssh-keygen -t ed25519 -P "${passpharse}" -f ${keyFile}`,
+        {},
+        { stdio: Stdio.Inherit }
+      );
+    }
 
     await runCommand(`eval "$(ssh-agent -s)"`);
     const configPath = getPath("~/.ssh/config");
