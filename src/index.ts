@@ -4,9 +4,10 @@ import { getName } from "./utils/device";
 import { pressAnyKeyToContinue } from "./utils/question";
 import { Step } from "./steps/step";
 import { formatTime } from "./utils/time";
-import { basicSteps, iOSSteps } from "./basicSteps";
 import { reportError, sendGeneralSlackMessage } from "./utils/errorHandling";
 import prompts from "prompts";
+import rndSteps from "./steps/rnd";
+import iOSSteps from "./steps/ios";
 
 export async function main() {
   await sendGeneralSlackMessage({ message: "Started setup" });
@@ -25,7 +26,7 @@ export async function main() {
     }
    )
 
-   await processSteps(basicSteps, "R&D");
+   await processSteps(rndSteps, "R&D");
 
    switch (flavor.value) {
       case "ios":
