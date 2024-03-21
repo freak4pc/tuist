@@ -1,4 +1,7 @@
-# MndyInstaller
+<p align="center">
+    <img src="assets/logo.png" alt="MndyInstaller logo" width="35%" />
+    <h1 align="center">MndyInstaller</h2>
+</p>
 
 This installer will make sure you're all set-up to start writing your first line of code at monday.com 🚀👩‍💻👨‍💻
 
