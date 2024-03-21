@@ -2,7 +2,12 @@ import { getPath } from "lib/utils/paths";
 import { Step } from "../step";
 import fs from "fs";
 
+export const DOTFILES_CONFIG_STEP = "dotfiles-config";
+
 export class DotfilesConfig extends Step {
+  type() {
+    return DOTFILES_CONFIG_STEP;
+  }
   async installCheck() {
     const zshrc = fs.readFileSync(getPath("~/.zshrc"), "utf8");
     if (!zshrc.includes("source ~/dotfiles/.bash_profile")) {

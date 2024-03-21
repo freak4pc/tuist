@@ -9,6 +9,8 @@ import prompts from "prompts";
 import rndSteps from "./steps/rnd";
 import iOSSteps from "./steps/ios";
 import { getLastStep, setLastStep } from "./utils/remember-last-step";
+import { getStepsToSkip } from "./steps/stepsToSkip";
+import { shouldSkipInteractivity } from "./config";
 
 export async function main() {
   const started = new Date().getTime();
@@ -32,6 +34,32 @@ export async function main() {
 
   setLastStep("Pick flavor");
 
+  const flavor = await getFlavor();
+
+  setLastStep("Start rnd Steps");
+  await processSteps(rndSteps, "R&D");
+
+  setLastStep(`Start flavor steps ${flavor}`);
+  switch (flavor) {
+    case "ios":
+      await processSteps(iOSSteps, "iOS");
+      break;
+    // Add additional flavors down here
+  }
+
+  clearInterval(interval);
+  setLastStep(`Finished all steps`);
+  console.log(green("All done ✨🎉! Time to write some code 👩‍💻👨‍💻"));
+  console.log(`Press any key to finish...`);
+  await pressAnyKeyToContinue();
+}
+
+main();
+
+async function getFlavor(): Promise<String> {
+  if (shouldSkipInteractivity()) {
+    return "general";
+  }
   const flavor = await prompts({
     type: "select",
     name: "value",
@@ -49,26 +77,8 @@ export async function main() {
       },
     ],
   });
-
-  setLastStep("Start rnd Steps");
-  await processSteps(rndSteps, "R&D");
-
-  setLastStep(`Start flavor steps ${flavor.value}`);
-  switch (flavor.value) {
-    case "ios":
-      await processSteps(iOSSteps, "iOS");
-      break;
-    // Add additional flavors down here
-  }
-
-  clearInterval(interval);
-  setLastStep(`Finished all steps`);
-  console.log(green("All done ✨🎉! Time to write some code 👩‍💻👨‍💻"));
-  console.log(`Press any key to finish...`);
-  await pressAnyKeyToContinue();
+  return flavor.value;
 }
-
-main();
 
 async function processSteps(steps: Step[], label: string) {
   console.log(cyan(`Running steps for ${label}`));
@@ -96,6 +106,15 @@ async function runSteps(steps: Step[]) {
   const startedAllAt = new Date();
   let skipped = 0;
   for (const step of steps) {
+    if (getStepsToSkip().has(step.type())) {
+      console.log(
+        `${gray(
+          `Skipped step ${step.name()}... ${"Step is in the list of steps to skip"}`
+        )}. ${idx}/${stepsCount}`
+      );
+      skipped++;
+      continue;
+    }
     setLastStep(`Start step ${step.name()}`);
     idx++;
     const startedCurrentStepAt = new Date();

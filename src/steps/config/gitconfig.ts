@@ -2,10 +2,17 @@ import { runCommand } from "lib/utils/exec";
 import { Step } from "../step";
 import { askQuestion } from "lib/utils/question";
 
+export const GIT_CONFIG_STEP = "gitconfig";
+
 export class GitConfig extends Step {
   constructor() {
     super();
   }
+
+  type(): string {
+    return GIT_CONFIG_STEP;
+  }
+
   async installCheck() {
     try {
       const name = (

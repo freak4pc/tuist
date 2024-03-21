@@ -4,11 +4,17 @@ import { pressAnyKeyToContinue } from "lib/utils/question";
 import { open } from "openurl";
 import { defaultNpmVersion } from "./nvm";
 
+export const NPM_INSTALL_STEP = "npminstall";
+
 export class InstallNpmPackages extends Step {
   packages: string[];
   constructor(packages: string[]) {
     super();
     this.packages = packages;
+  }
+
+  type() {
+    return NPM_INSTALL_STEP;
   }
 
   async checkPreinstall(): Promise<{

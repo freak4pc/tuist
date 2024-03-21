@@ -1,15 +1,19 @@
 import { runCommand } from "lib/utils/exec";
 
 export abstract class Step {
+  type(): string {
+    return "step";
+  }
+
   async install(): Promise<{
     success: boolean;
     reason?: string;
     error?: Error;
   }> {
     try {
+      await this.installStep();
       // reload env variables
       await runCommand(`source ~/.zshrc > /dev/null 2>&1 || true`);
-      await this.installStep();
     } catch (e: any) {
       return {
         success: false,

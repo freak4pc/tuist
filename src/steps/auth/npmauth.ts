@@ -11,7 +11,13 @@ import {
 } from "lib/utils/question";
 import { red } from "console-log-colors";
 
+export const NPM_AUTH_STEP = "npmauth";
+
 export class NpmAuth extends Step {
+  type() {
+    return NPM_AUTH_STEP;
+  }
+
   async installCheck() {
     if (!fs.existsSync(`${os.homedir()}/.npmrc`)) {
       return { valid: false, reason: "No .npmrc file found in home directory" };

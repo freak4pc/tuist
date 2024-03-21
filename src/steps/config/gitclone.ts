@@ -5,7 +5,12 @@ import { getPath } from "lib/utils/paths";
 import { pressAnyKeyToContinue } from "lib/utils/question";
 import { open } from "openurl";
 
+export const GIT_CLONE_STEP = "gitclone";
+
 export class GitClone extends Step {
+  type() {
+    return GIT_CLONE_STEP;
+  }
   repo: string;
   destination: string;
   showOutput: boolean = false;

@@ -9,7 +9,12 @@ import {
 import { open } from "openurl";
 import { getPath } from "lib/utils/paths";
 
+export const GITHUB_AUTH_STEP = "gitauth";
+
 export class GithubAuth extends Step {
+  type() {
+    return GITHUB_AUTH_STEP;
+  }
   async installCheck() {
     try {
       const authResult = await runCommand("gh auth token");
