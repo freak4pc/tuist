@@ -22,45 +22,45 @@ import { InstallXcodeCLI } from "./prepare/xcode";
 import { Step } from "./step";
 
 export default [
-    new CreateDevelopmentFolder(),
-    new InstallXcodeCLI(),
-    new InstallHomebrew(),
-    new InstallIterm(),
-    new InstallGit(),
-    new InstallNvm(),
-    new InstallPipPackages(["virtualenv"]),
-    new InstallPipPackages(["octodns==0.9.10", "nsone", "boto3", "route53"]),
-    new InstallBrewPackages(["cask", "make", "yarn"]),
-    new InstallBrewPackages(
-      [
-        "iterm2",
-        "jq",
-        "gpg",
-        "kubectl",
-        "kubectx",
-        "warrensbox/tap/tfswitch",
-        "aws-iam-authenticator",
-        "pyenv",
-        "awscli",
-        "redis",
-        "mysql",
-      ],
-      { force: true }
-    ),
-    new InstallBrewPackages(["gh"]),
-  
-    new PythonFixes(),
-  
-    new SetEnvVariable("AWS_PROFILE", "default"),
-    new SetEnvVariable("AWS_REGION", "us-east-1"),
-    new InstallBrewPackages(["dbeaver-community"], { cask: true }),
-  
-    new BrewAddRepos(["codefresh-io/cli", "versent/taps"]),
-    new InstallBrewPackages(["codefresh", "saml2aws"]),
-    new AwsCreds(),
-    new InstallOkteto(),
-    // new RvmInstaller(),
-    /*
+  new CreateDevelopmentFolder(),
+  new InstallXcodeCLI(),
+  new InstallHomebrew(),
+  new InstallIterm(),
+  new InstallGit(),
+  new InstallNvm(),
+  new InstallPipPackages(["virtualenv"]),
+  new InstallPipPackages(["octodns==0.9.10", "nsone", "boto3", "route53"]),
+  new InstallBrewPackages(["cask", "make", "yarn"]),
+  new InstallBrewPackages(
+    [
+      "iterm2",
+      "jq",
+      "gpg",
+      "kubectl",
+      "kubectx",
+      "warrensbox/tap/tfswitch",
+      "aws-iam-authenticator",
+      "pyenv",
+      "awscli",
+      "redis",
+      "mysql",
+    ],
+    { force: true }
+  ),
+  new InstallBrewPackages(["gh"]),
+
+  new PythonFixes(),
+
+  new SetEnvVariable("AWS_PROFILE", "default"),
+  new SetEnvVariable("AWS_REGION", "us-east-1"),
+  new InstallBrewPackages(["dbeaver-community"], { cask: true }),
+
+  new BrewAddRepos(["codefresh-io/cli", "versent/taps"]),
+  new InstallBrewPackages(["codefresh", "saml2aws"]),
+  new AwsCreds(),
+  new InstallOkteto(),
+  // new RvmInstaller(),
+  /*
       Need to add these:
   
       # installing Ruby - version 2.7.2
@@ -73,14 +73,14 @@ export default [
       brew reinstall openssl@3
       rvm --default use 2.7.2
       */
-    new InstallTeleport(),
-    new NpmAuth(),
-  
-    new GitConfig(),
-    new GithubAuth(),
-  
-    new InstallNpmPackages(["@mondaydotcomorg/monday-dev-cli"]),
-  
-    new GitClone("DaPulse/dotfiles", getPath("~/dotfiles")),
-    new DotfilesConfig(),
+  new InstallTeleport(),
+  new NpmAuth(),
+
+  new GitConfig(),
+  new GithubAuth(),
+
+  new InstallNpmPackages(["@mondaydotcomorg/monday-dev-cli"]),
+
+  new GitClone("DaPulse/dotfiles", getPath("~/dotfiles")),
+  new DotfilesConfig(),
 ] as Step[];

@@ -7,7 +7,8 @@
     "build": "yarn build-dist && yarn build-exe",
     "build-dist": "rollup -c",
     "build-exe": "pkg dist/index.js -t node18-macos-arm64 -o bin/mndyinstaller",
-    "start": "yarn build-dist && node dist/index.js"
+    "start": "yarn build-dist && node dist/index.js",
+    "prettify": "prettier --write ."
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",

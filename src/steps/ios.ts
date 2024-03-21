@@ -7,9 +7,9 @@ import { CreateDevelopmentFolder } from "./prepare/createDevelopmentFolder";
 import { Step } from "./step";
 
 export default [
-    new CreateDevelopmentFolder(),
-    new InstallBrewPackages(["xcodesorg/made/xcodes", "aria2", "libyaml"]),
-    new InstallXcode(),
-    new GitClone("DaPulse/iOS", `${getDevelopmentPath()}/iOS`, true),
-    new InstallMise()
+  new CreateDevelopmentFolder(),
+  new InstallBrewPackages(["xcodesorg/made/xcodes", "aria2", "libyaml"]),
+  new InstallXcode(),
+  new GitClone("DaPulse/iOS", `${getDevelopmentPath()}/iOS`, true),
+  new InstallMise(),
 ] as Step[];

@@ -14,30 +14,36 @@ export async function main() {
   const name = await getName();
   console.log(`Hello ${yellow(name.fullName)}! Let's set you up!`);
 
-  const flavor = await prompts(
-    {
-      type: 'select',
-      name: 'value',
-      message: 'What kind of developer are you?',
-      choices: [
-        { title: 'Fullstack (General R&D)', description: 'Everything you need to get started in the R&D', value: 'general' },
-        { title: 'iOS', description: 'Everything from R&D + Additional iOS-specific setup', value: 'ios'  }
-      ]
-    }
-   )
+  const flavor = await prompts({
+    type: "select",
+    name: "value",
+    message: "What kind of developer are you?",
+    choices: [
+      {
+        title: "Fullstack (General R&D)",
+        description: "Everything you need to get started in the R&D",
+        value: "general",
+      },
+      {
+        title: "iOS",
+        description: "Everything from R&D + Additional iOS-specific setup",
+        value: "ios",
+      },
+    ],
+  });
 
-   await processSteps(rndSteps, "R&D");
+  await processSteps(rndSteps, "R&D");
 
-   switch (flavor.value) {
-      case "ios":
-        await processSteps(iOSSteps, "iOS");
-        break;
-      // Add additional flavors down here
-    }
+  switch (flavor.value) {
+    case "ios":
+      await processSteps(iOSSteps, "iOS");
+      break;
+    // Add additional flavors down here
+  }
 
-   console.log(green("All done ✨🎉! Time to write some code 👩‍💻👨‍💻"))
-   console.log(`Press any key to finish...`);
-   await pressAnyKeyToContinue();
+  console.log(green("All done ✨🎉! Time to write some code 👩‍💻👨‍💻"));
+  console.log(`Press any key to finish...`);
+  await pressAnyKeyToContinue();
 }
 
 main();
@@ -53,10 +59,12 @@ async function processSteps(steps: Step[], label: string) {
     )}`,
   });
   console.log();
-  console.log(cyan(`All ${label} steps done in ${formatTime(
-    new Date().getTime() - startedAllAt.getTime()
-  )}
-    skipped ${skipped} steps / ${stepsCount} total steps`));
+  console.log(
+    cyan(`All ${label} steps done in ${formatTime(
+      new Date().getTime() - startedAllAt.getTime()
+    )}
+    skipped ${skipped} steps / ${stepsCount} total steps`)
+  );
   console.log();
 }
 

@@ -1,8 +1,9 @@
 # Mndyinstaller
 
 Running mndyinstaller:
-1. Download the latest `mndyinstaller` version from 
-https://github.com/DaPulse/mndyinstaller/releases
+
+1. Download the latest `mndyinstaller` version from
+   https://github.com/DaPulse/mndyinstaller/releases
 
 2. To give the script permissions run
 
@@ -21,6 +22,6 @@ chmod u+x ./mndyinstaller
 > The default development path is `~/Development`. If you want to customize it, make sure `MONDAY_PATH` is set in your `~/.zshrc` and environment before running this script.
 
 ## Contribute
+
 The basic steps are in an array at src/basicSteps.ts
 You can go there and add steps or find the step you want to fix
-

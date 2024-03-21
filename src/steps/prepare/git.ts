@@ -1,23 +1,29 @@
-import { Step } from '../step';
-import { runCommand } from 'lib/utils/exec';
-import { hasCommand } from 'lib/utils/checks';
+import { Step } from "../step";
+import { runCommand } from "lib/utils/exec";
+import { hasCommand } from "lib/utils/checks";
 
 export class InstallGit extends Step {
-    constructor() {
-        super();
+  constructor() {
+    super();
+  }
+  async installCheck() {
+    if (!(await hasCommand("git --version"))) {
+      return {
+        valid: false,
+        reason: "Git is not installed. Command git not found.",
+      };
     }
-    async installCheck() {
-        if(!await hasCommand('git --version')) {
-            return { valid: false, reason: "Git is not installed. Command git not found." };
-        }
-        return { valid: true, reason: "Git is already installed, already able to use git cli" };
-    }
+    return {
+      valid: true,
+      reason: "Git is already installed, already able to use git cli",
+    };
+  }
 
-    name() {
-        return "Install Git";
-    }
+  name() {
+    return "Install Git";
+  }
 
-    async installStep() {
-        await runCommand('brew install git')
-    }
+  async installStep() {
+    await runCommand("brew install git");
+  }
 }

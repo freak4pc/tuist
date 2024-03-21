@@ -62,7 +62,7 @@ export class NpmAuth extends Step {
             console.log("Opening browser to complete login...");
             open(fullUrl[0]);
             console.log("Press any when you're done");
-            await pressAnyKeyToContinue()
+            await pressAnyKeyToContinue();
           }
         },
       }

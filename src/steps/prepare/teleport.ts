@@ -3,21 +3,26 @@ import { Step } from "../step";
 import { hasCommand } from "lib/utils/checks";
 
 export class InstallTeleport extends Step {
-    async installCheck() {
-        if(!await hasCommand('teleport version')) {
-            return { valid: false, reason: "Teleport is not installed. Command Teleport not found." };
-        }
-        return { valid: true };
+  async installCheck() {
+    if (!(await hasCommand("teleport version"))) {
+      return {
+        valid: false,
+        reason: "Teleport is not installed. Command Teleport not found.",
+      };
     }
+    return { valid: true };
+  }
 
-    name() {
-        return "Install Teleport";
-    }
+  name() {
+    return "Install Teleport";
+  }
 
-    async installStep() {
-        console.log("downloading teleport");
-        await runCommand('curl -O https://cdn.teleport.dev/teleport-ent-13.3.4.pkg');
-        console.log("installing teleport");
-        await runCommand('sudo installer -pkg teleport-ent-13.3.4.pkg -target /');
-    }
+  async installStep() {
+    console.log("downloading teleport");
+    await runCommand(
+      "curl -O https://cdn.teleport.dev/teleport-ent-13.3.4.pkg"
+    );
+    console.log("installing teleport");
+    await runCommand("sudo installer -pkg teleport-ent-13.3.4.pkg -target /");
+  }
 }
